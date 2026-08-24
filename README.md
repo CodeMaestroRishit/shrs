@@ -125,7 +125,7 @@ latter without a live Google sign-in has to happen at the SQL level:
   throwaway clubs/users/events, impersonates anon / a club admin / a
   non-admin student / a different club's admin (the same role + JWT-claim
   impersonation technique [Supabase's own RLS docs](https://supabase.com/docs/guides/database/postgres/row-level-security#testing-policies)
-  recommend), and asserts things like "admin A can edit their own event",
+  recommend), and asserts test things like "admin A can edit their own event",
   "admin A cannot touch admin B's event", "a signed-out visitor can read
   but not write". Everything runs inside one transaction that ends in
   `rollback;`, so it never touches your real data. Read the PASS/FAIL table
