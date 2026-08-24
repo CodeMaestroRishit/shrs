@@ -114,6 +114,32 @@ Visit `http://localhost:5173`.
   frontend — a disallowed sign-in fails before any session or profile is
   created.
 
+## Testing that the database actually enforces this
+
+`supabase/tests/` has two scripts, since fully testing this needs both an
+anonymous client and a real authenticated club admin — and simulating the
+latter without a live Google sign-in has to happen at the SQL level:
+
+- **`rls_smoke_test.sql`** — the main test. Paste it into the Supabase SQL
+  Editor and run it after the four migrations are applied. It creates
+  throwaway clubs/users/events, impersonates anon / a club admin / a
+  non-admin student / a different club's admin (the same role + JWT-claim
+  impersonation technique [Supabase's own RLS docs](https://supabase.com/docs/guides/database/postgres/row-level-security#testing-policies)
+  recommend), and asserts things like "admin A can edit their own event",
+  "admin A cannot touch admin B's event", "a signed-out visitor can read
+  but not write". Everything runs inside one transaction that ends in
+  `rollback;`, so it never touches your real data. Read the PASS/FAIL table
+  in the Results pane.
+- **`anon_access_check.mjs`** — a small Node script hitting the project
+  with only the public anon key (what the deployed frontend uses), to
+  confirm anonymous reads work and anonymous writes are rejected:
+  ```bash
+  VITE_SUPABASE_URL=... VITE_SUPABASE_ANON_KEY=... node supabase/tests/anon_access_check.mjs
+  ```
+
+Run the `.sql` one first — it's the one that actually exercises the
+club-admin write paths.
+
 ## Designed for future phases (not built yet)
 
 - **Transactional email**: no SMTP is wired up. When needed, add a
