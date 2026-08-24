@@ -150,7 +150,7 @@ club-admin write paths.
   without reshaping `events`.
 - Search/categories/realtime were intentionally left out of this MVP.
 
-## Project structure
+## Project Structure
 
 ```
 src/
