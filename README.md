@@ -4,7 +4,7 @@ College Club & Events Platform. Students browse events; club admins manage
 events for the clubs they administer. React (Vite) frontend, Supabase
 (Auth + Postgres + Storage) backend.
 
-## Stack
+## Stack used
 
 - Frontend: React + Vite, deployed to Vercel
 - Backend: Supabase (Auth, Postgres, Storage)
@@ -21,6 +21,8 @@ events for the clubs they administer. React (Vite) frontend, Supabase
 3. In **Authentication → URL Configuration**, add your local dev URL
    (`http://localhost:5173`) and your Vercel URL to the redirect allow list.
 
+woah
+  
 ## 2. Run the migrations
 
 The SQL in `supabase/migrations/` is plain Postgres SQL, run in order:
