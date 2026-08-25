@@ -6,6 +6,7 @@ import EventCard from '../components/EventCard'
 import ImageUpload from '../components/ImageUpload'
 import LoadingSpinner from '../components/LoadingSpinner'
 import { toDatetimeLocalValue } from '../utils/date'
+import { extractYouTubeId } from '../utils/youtube'
 
 const emptyForm = {
   club_id: '',
@@ -15,6 +16,7 @@ const emptyForm = {
   start_time: '',
   end_time: '',
   image_url: '',
+  youtube_url: '',
 }
 
 export default function EventForm() {
@@ -62,6 +64,7 @@ export default function EventForm() {
             start_time: toDatetimeLocalValue(data.start_time),
             end_time: toDatetimeLocalValue(data.end_time),
             image_url: data.image_url ?? '',
+            youtube_url: data.youtube_video_url ?? '',
           })
         }
         setLoading(false)
@@ -74,6 +77,12 @@ export default function EventForm() {
 
   async function handleSubmit(e) {
     e.preventDefault()
+
+    if (form.youtube_url && !extractYouTubeId(form.youtube_url)) {
+      setError("That doesn't look like a YouTube link — paste a youtube.com/watch or youtu.be URL.")
+      return
+    }
+
     setSaving(true)
     setError(null)
 
@@ -85,6 +94,7 @@ export default function EventForm() {
       start_time: form.start_time ? new Date(form.start_time).toISOString() : null,
       end_time: form.end_time ? new Date(form.end_time).toISOString() : null,
       image_url: form.image_url || null,
+      youtube_video_url: form.youtube_url || null,
     }
 
     const { error: saveError } = isEditing
@@ -134,7 +144,7 @@ export default function EventForm() {
           </label>
 
           <label>
-            Location
+            Venue
             <input type="text" value={form.location} onChange={(e) => update('location', e.target.value)} />
           </label>
 
@@ -161,6 +171,20 @@ export default function EventForm() {
               <p>Select a club first.</p>
             )}
           </label>
+
+          <label>
+            YouTube video link
+            <input
+              type="url"
+              placeholder="https://youtube.com/watch?v=…"
+              value={form.youtube_url}
+              onChange={(e) => update('youtube_url', e.target.value)}
+            />
+          </label>
+          <p className="form-hint">
+            Optional. Shown as an embedded preview on the event page — hosted by YouTube, so it
+            costs us no storage or bandwidth.
+          </p>
 
           {error && <p className="form-error">{error}</p>}
 

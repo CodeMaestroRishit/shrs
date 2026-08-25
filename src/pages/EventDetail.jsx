@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
 import { formatEventDateRange } from '../utils/date'
+import { extractYouTubeId } from '../utils/youtube'
 import LoadingSpinner from '../components/LoadingSpinner'
 
 export default function EventDetail() {
@@ -36,6 +37,7 @@ export default function EventDetail() {
   if (!event) return <p>Event not found.</p>
 
   const mapsQuery = event.location ? encodeURIComponent(event.location) : ''
+  const youtubeId = extractYouTubeId(event.youtube_video_url)
 
   return (
     <div className="page event-detail">
@@ -63,6 +65,18 @@ export default function EventDetail() {
             View on map
           </a>
         </p>
+      )}
+
+      {youtubeId && (
+        <div className="event-detail-video">
+          <iframe
+            src={`https://www.youtube-nocookie.com/embed/${youtubeId}`}
+            title={`${event.title} — video`}
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        </div>
       )}
 
       {event.description && <p className="event-detail-description">{event.description}</p>}
