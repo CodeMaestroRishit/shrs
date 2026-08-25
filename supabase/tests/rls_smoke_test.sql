@@ -23,6 +23,10 @@ create temp table test_results (seq serial primary key, name text not null, pass
 -- (permission denied), even though we still own the transaction.
 grant select, insert, update, delete on test_fixtures to anon, authenticated;
 grant select, insert, update, delete on test_results to anon, authenticated;
+-- test_results.seq is a serial column, which is backed by its own
+-- sequence object -- granting INSERT on the table doesn't include
+-- permission to advance that sequence, so it needs its own grant.
+grant usage, select on all sequences in schema pg_temp to anon, authenticated;
 
 -- =====================================================================
 -- Fixtures (run as the SQL Editor's own role, which bypasses RLS)
