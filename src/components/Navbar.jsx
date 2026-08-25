@@ -5,9 +5,7 @@ import { useAuth } from '../context/AuthContext'
 // <img src="/rvu-logo.svg" .../>) once you have the brand asset.
 function LogoMark() {
   return (
-    <span className="logo-mark" aria-hidden="true">
-      RV
-    </span>
+    <img src="/rvu-logo.png" className="navbar-logo" alt="RV University" />
   )
 }
 
@@ -18,13 +16,11 @@ export default function Navbar() {
     <header className="navbar">
       <Link to="/" className="navbar-brand">
         <LogoMark />
-        <span className="navbar-brand-text">
-          <strong>RV University</strong>
-          <small>Campus Club Events</small>
-        </span>
+        <span className="navbar-brand-label">Campus Events</span>
       </Link>
       <nav className="navbar-links">
-        <Link to="/events">Events</Link>
+        <Link to="/">Home</Link>
+        <Link to="/events">Upcoming</Link>
         {isAnyClubAdmin && <Link to="/admin">Admin Dashboard</Link>}
         {user ? (
           <div className="navbar-user">
