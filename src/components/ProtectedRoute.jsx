@@ -6,7 +6,7 @@ export default function ProtectedRoute({ requireClubAdmin = false, children }) {
   const { user, loading, isAnyClubAdmin } = useAuth()
 
   if (loading) return <LoadingSpinner />
-  if (!user) return <Navigate to="/login" replace />
+  if (!user) return <Navigate to="/" replace />
   if (requireClubAdmin && !isAnyClubAdmin) return <Navigate to="/unauthorized" replace />
 
   return children

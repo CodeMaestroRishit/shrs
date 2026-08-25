@@ -51,10 +51,10 @@ export function AuthProvider({ children }) {
     }
   }, [session?.user?.id])
 
-  async function signInWithGoogle() {
+  async function signInWithGoogle(redirectPath = '/') {
     await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: window.location.origin },
+      options: { redirectTo: window.location.origin + redirectPath },
     })
   }
 
