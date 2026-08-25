@@ -7,6 +7,14 @@ create table public.allowed_email_domains (
   domain text primary key
 );
 
+-- RLS enabled with zero policies: deny-all via the Data API. Nothing
+-- client-side ever needs to read or write this table -- only the
+-- SECURITY DEFINER trigger below does, and it runs as the table owner,
+-- which is exempt from RLS. Leaving this table open would let anyone call
+-- the REST API directly to add their own domain or delete the real one,
+-- defeating the whole point of the restriction.
+alter table public.allowed_email_domains enable row level security;
+
 -- Placeholder domain -- change this for your college, e.g.:
 --   update public.allowed_email_domains set domain = 'yourcollege.edu' where domain = 'rvu.edu.in';
 insert into public.allowed_email_domains (domain) values ('rvu.edu.in');
