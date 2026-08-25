@@ -162,3 +162,12 @@ src/
   pages/                  EventsDiscovery, EventDetail, ClubProfile, AdminDashboard, EventForm, Login
 supabase/migrations/      SQL migrations, run in numeric order
 ```
+
+
+
+
+
+
+
+
+ghee
