@@ -12,7 +12,7 @@ function LogoMark() {
 }
 
 export default function Navbar() {
-  const { user, profile, isAnyClubAdmin, signOut } = useAuth()
+  const { user, profile, isAnyClubAdmin, signInWithGoogle, signOut } = useAuth()
 
   return (
     <header className="navbar">
@@ -34,9 +34,9 @@ export default function Navbar() {
             </button>
           </div>
         ) : (
-          <Link to="/" className="button-primary">
+          <button type="button" className="button-primary" onClick={() => signInWithGoogle()}>
             Sign in
-          </Link>
+          </button>
         )}
       </nav>
     </header>
