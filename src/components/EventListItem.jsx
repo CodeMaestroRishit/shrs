@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { formatEventDate, formatEventDateRange } from '../utils/date'
 import EventStatusBadge from './EventStatusBadge'
+import { parseVenue } from '../utils/venue'
 
 function CalendarIcon() {
   return (
@@ -38,6 +39,8 @@ function PinIcon() {
 }
 
 export default function EventListItem({ event, clubName, posterVariant = 'a' }) {
+  const venue = parseVenue(event.location)
+
   return (
     <article className="event-list-item">
       <div className={`event-list-thumb poster-variant-${posterVariant}`}>
@@ -61,9 +64,9 @@ export default function EventListItem({ event, clubName, posterVariant = 'a' }) 
           <span>
             <ClockIcon /> {formatEventDateRange(event.start_time, event.end_time).split('·').slice(1).join('·').trim()}
           </span>
-          {event.location && (
+          {venue.name && (
             <span>
-              <PinIcon /> {event.location}
+              <PinIcon /> {venue.name}
             </span>
           )}
         </div>

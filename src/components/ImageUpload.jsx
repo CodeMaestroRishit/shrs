@@ -1,11 +1,12 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { supabase } from '../lib/supabaseClient'
 
 const MAX_FILE_BYTES = 500 * 1024 // 500 KiB — matches the storage bucket's server-side cap
 
-export default function ImageUpload({ clubId, value, onChange }) {
+export default function ImageUpload({ clubId, value, onChange, label = 'poster' }) {
   const [uploading, setUploading] = useState(false)
   const [error, setError] = useState(null)
+  const inputRef = useRef(null)
 
   async function handleFileChange(e) {
     const file = e.target.files?.[0]
@@ -41,10 +42,33 @@ export default function ImageUpload({ clubId, value, onChange }) {
     setUploading(false)
   }
 
+  function handleRemove() {
+    onChange('')
+    setError(null)
+    if (inputRef.current) inputRef.current.value = ''
+  }
+
   return (
     <div className="image-upload">
-      {value && <img src={value} alt="Poster preview" className="image-upload-preview" />}
-      <input type="file" accept="image/*" onChange={handleFileChange} disabled={uploading} />
+      {value ? (
+        <div className="image-upload-preview-wrap">
+          <img src={value} alt={`${label} preview`} className="image-upload-preview" />
+          <span className="image-upload-selected">Selected {label}</span>
+          <button
+            type="button"
+            className="image-upload-remove"
+            onClick={handleRemove}
+            aria-label={`Remove selected ${label}`}
+            title={`Remove ${label}`}
+          >
+            <span aria-hidden="true">×</span>
+            Remove
+          </button>
+        </div>
+      ) : (
+        <div className="image-upload-empty" aria-live="polite">No {label} selected</div>
+      )}
+      <input ref={inputRef} type="file" accept="image/*" onChange={handleFileChange} disabled={uploading} />
       <p className="form-hint">Compress before uploading — max 500 KB. We're on Supabase's free storage tier, so every KB counts.</p>
       {uploading && <p>Uploading…</p>}
       {error && <p className="form-error">{error}</p>}
