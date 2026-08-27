@@ -508,6 +508,7 @@ main {
 }
 
 .event-calendar-help { margin:.05rem 0 .65rem; color:var(--muted); font-size:.72rem; }
+.event-calendar-help-row { display:flex; align-items:baseline; justify-content:space-between; gap:.5rem; }.event-calendar-help-row .event-calendar-help { flex:1; }.event-calendar-clear { padding:0; border:0; background:transparent; color:var(--color-accent); cursor:pointer; font-size:.7rem; font-weight:800; letter-spacing:.04em; text-transform:uppercase; }
 
 .event-calendar-header button {
   background: transparent;
@@ -1070,9 +1071,6 @@ main {
     height: 140px;
   }
 }
-<<<<<<< Updated upstream
-=======
-
 /* RVU editorial / Webinarist-inspired surface */
 :root { --paper:var(--color-background); --surface:var(--color-surface); --surface-sunk:#efefeb; --border:#d9d9d2; --ink:var(--color-text); --ink-soft:#555550; --muted:#74746d; --brand:var(--color-brand); --brand-strong:#b79455; --brand-ink:var(--color-dark); --brand-soft-bg:#f5eddd; --gold:var(--color-brand); --gold-strong:#8e784d; --shadow:0 8px 28px rgba(30,30,30,.055); }
 body::before { content:''; position:fixed; inset:0; pointer-events:none; opacity:.23; background-image:linear-gradient(rgba(17,43,60,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(17,43,60,.05) 1px,transparent 1px); background-size:38px 38px; z-index:-1; }
@@ -1146,4 +1144,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 /* Small interaction lift without departing from the existing editorial treatment. */
 .event-detail-actions button { display:inline-flex; align-items:center; justify-content:center; gap:.45rem; min-height:44px; }.event-detail-actions svg { width:16px; height:16px; flex:none; }.event-action-share { font-weight:800; letter-spacing:.045em; text-transform:uppercase; }.event-action-share:hover { background:var(--brand-soft-bg); color:var(--color-accent); }.event-action-calendar.is-added { background:var(--color-accent); border-color:var(--color-accent); color:#fff; animation:calendar-confirm 420ms cubic-bezier(.22,1,.36,1) both; }.event-detail-actions button:disabled { cursor:default; transform:none; opacity:1; }.event-calendar-message { margin:.55rem 0 0; color:var(--color-accent); font-size:.78rem; font-weight:700; }.event-list-thumb img,.event-card-poster img { transition:transform 420ms cubic-bezier(.22,1,.36,1); }.event-list-item:hover .event-list-thumb img,.event-card:hover .event-card-poster img { transform:scale(1.045); }.event-status-soon::before { content:''; width:5px; height:5px; margin-right:.35rem; border-radius:50%; background:currentColor; animation:soon-pulse 1.8s ease-in-out infinite; }
 @keyframes calendar-confirm { 0% { transform:scale(.96); } 55% { transform:scale(1.025); } 100% { transform:scale(1); } } @keyframes soon-pulse { 50% { opacity:.4; transform:scale(.7); } }
->>>>>>> Stashed changes
+
+/* A slightly stronger welcome for students, built from the existing hero and access-card system. */
+.home-hero-top { display:flex; justify-content:space-between; gap:1.5rem; position:relative; z-index:1; }.home-hero-stamp { display:flex; flex-direction:column; align-items:flex-end; min-width:110px; padding-top:.3rem; color:rgba(255,255,255,.68); font-size:.66rem; font-weight:800; letter-spacing:.08em; text-align:right; text-transform:uppercase; }.home-hero-stamp strong { color:var(--color-brand); font-size:2rem; line-height:1; letter-spacing:-.07em; }.home-hero-stamp small { margin-top:.4rem; max-width:12ch; font-size:.62rem; line-height:1.35; }.quick-link-student { position:relative; }.home-student-actions { display:flex; flex-wrap:wrap; align-items:center; gap:.7rem; align-self:center; }.home-student-actions .button-ghost { border-color:var(--border); color:var(--ink); }.home-student-actions .button-ghost:hover { border-color:var(--color-accent); color:var(--color-accent); }
+@media (max-width:640px) { .home-hero-top { display:block; }.home-hero-stamp { align-items:flex-start; margin-top:1.5rem; text-align:left; }.home-student-actions { grid-column:2; justify-content:flex-start; align-self:start; }.home-student-actions .button-primary,.home-student-actions .button-ghost { min-height:42px; } }

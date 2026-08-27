@@ -46,7 +46,7 @@ export default function EventCalendar({ selectedDate, onSelectDate, eventDates }
         </button>
       </div>
 
-      <p className="event-calendar-help">Select a date to filter events.</p>
+      <div className="event-calendar-help-row"><p className="event-calendar-help">Select a date to filter events.</p>{selectedDate && <button type="button" className="event-calendar-clear" onClick={() => onSelectDate(null)}>Clear date</button>}</div>
 
       <div className="event-calendar-weekdays">
         {WEEKDAY_LABELS.map((label) => (
