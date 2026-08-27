@@ -40,6 +40,10 @@ The SQL in `supabase/migrations/` is plain Postgres SQL, run in order:
 - `0006_youtube_and_storage_limits.sql` — adds `events.youtube_video_url`
   and caps the poster bucket at 2 MB / image mime types only, to protect
   the Supabase free tier's storage quota
+- `0007_reduce_poster_size_limit.sql` — tightens the poster cap to 500 KB
+  to cut into egress further
+- `0008_detail_poster.sql` — adds `events.detail_poster_url`, a second
+  optional poster shown only on the event's own page
 
 Run them via the Supabase SQL Editor (paste each file's contents in order),
 or with the Supabase CLI:
@@ -172,8 +176,9 @@ supabase/migrations/      SQL migrations, run in numeric order
 
 ## Keeping storage on the free tier
 
-- Event posters: capped server-side at 2 MB and image mime types only
-  (`0006_youtube_and_storage_limits.sql`), with a matching client-side
+- Event posters: capped server-side at 500 KB and image mime types only
+  (`0006_youtube_and_storage_limits.sql`, `0007_reduce_poster_size_limit.sql`),
+  with a matching client-side
   check in `ImageUpload` so admins get an immediate error instead of a
   silent rejection. Admins are asked to compress posters (tinypng.com,
   squoosh.app) before uploading.

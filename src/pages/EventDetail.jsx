@@ -67,6 +67,12 @@ export default function EventDetail() {
         </p>
       )}
 
+      {event.detail_poster_url && (
+        <div className="event-detail-poster">
+          <img src={event.detail_poster_url} alt={`${event.title} poster`} />
+        </div>
+      )}
+
       {youtubeId && (
         <div className="event-detail-video">
           <iframe

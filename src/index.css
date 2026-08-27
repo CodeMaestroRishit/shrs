@@ -836,6 +836,18 @@ main {
   color: var(--ink-soft);
 }
 
+.event-detail-poster {
+  margin-top: 1.5rem;
+  max-width: 65ch;
+}
+
+.event-detail-poster img {
+  width: 100%;
+  display: block;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
 .event-detail-video {
   position: relative;
   width: 100%;

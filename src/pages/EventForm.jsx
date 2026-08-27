@@ -16,6 +16,7 @@ const emptyForm = {
   start_time: '',
   end_time: '',
   image_url: '',
+  detail_poster_url: '',
   youtube_url: '',
 }
 
@@ -64,6 +65,7 @@ export default function EventForm() {
             start_time: toDatetimeLocalValue(data.start_time),
             end_time: toDatetimeLocalValue(data.end_time),
             image_url: data.image_url ?? '',
+            detail_poster_url: data.detail_poster_url ?? '',
             youtube_url: data.youtube_video_url ?? '',
           })
         }
@@ -94,6 +96,7 @@ export default function EventForm() {
       start_time: form.start_time ? new Date(form.start_time).toISOString() : null,
       end_time: form.end_time ? new Date(form.end_time).toISOString() : null,
       image_url: form.image_url || null,
+      detail_poster_url: form.detail_poster_url || null,
       youtube_video_url: form.youtube_url || null,
     }
 
@@ -171,6 +174,24 @@ export default function EventForm() {
               <p>Select a club first.</p>
             )}
           </label>
+          <p className="form-hint">Shown as the thumbnail on cards and listings across the site.</p>
+
+          <label>
+            Detailed poster
+            {form.club_id ? (
+              <ImageUpload
+                clubId={form.club_id}
+                value={form.detail_poster_url}
+                onChange={(url) => update('detail_poster_url', url)}
+              />
+            ) : (
+              <p>Select a club first.</p>
+            )}
+          </label>
+          <p className="form-hint">
+            Optional. A bigger, more detailed poster shown only on this event's own page — not on
+            cards or listings.
+          </p>
 
           <label>
             YouTube video link
