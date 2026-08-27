@@ -36,7 +36,7 @@ export default function EventDetail() {
   if (error) return <p className="form-error">{error}</p>
   if (!event) return <p>Event not found.</p>
 
-  const mapsQuery = event.location ? encodeURIComponent(event.location) : ''
+  const mapsQuery = event.location ? encodeURIComponent(`RV University, Bengaluru, ${event.location}`) : ''
   const youtubeId = extractYouTubeId(event.youtube_video_url)
 
   return (
