@@ -220,6 +220,13 @@ export default function EventForm() {
             event={form}
             clubName={adminClubs.find((c) => c.id === form.club_id)?.name}
           />
+
+          {form.detail_poster_url && (
+            <div className="event-form-preview-detail-poster">
+              <h3>Detailed poster preview</h3>
+              <img src={form.detail_poster_url} alt="Detailed poster preview" />
+            </div>
+          )}
         </div>
       </div>
     </div>

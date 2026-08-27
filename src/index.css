@@ -1012,6 +1012,26 @@ main {
   top: 1.5rem;
 }
 
+.event-form-preview-detail-poster {
+  margin-top: 1.25rem;
+}
+
+.event-form-preview-detail-poster h3 {
+  margin: 0 0 0.5rem;
+  font-size: 0.82rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.event-form-preview-detail-poster img {
+  width: 100%;
+  display: block;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  border-radius: 4px;
+}
+
 .image-upload-preview {
   width: 100%;
   max-height: 180px;
