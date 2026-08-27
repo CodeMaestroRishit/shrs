@@ -7,7 +7,7 @@ function SearchIcon() {
   )
 }
 
-export default function EventFilters({ clubs, filters, onChange }) {
+export default function EventFilters({ clubs, categories, filters, onChange, onReset }) {
   function update(field, value) {
     onChange({ ...filters, [field]: value })
   }
@@ -35,6 +35,27 @@ export default function EventFilters({ clubs, filters, onChange }) {
           ))}
         </select>
       </label>
+
+      {categories.length > 0 && (
+        <label className="event-filter-select">
+          <span>Category</span>
+          <select value={filters.category} onChange={(e) => update('category', e.target.value)}>
+            <option value="">All categories</option>
+            {categories.map((category) => <option key={category} value={category}>{category}</option>)}
+          </select>
+        </label>
+      )}
+
+      <label className="event-filter-select">
+        <span>Event status</span>
+        <select value={filters.status} onChange={(e) => update('status', e.target.value)}>
+          <option value="all">All events</option>
+          <option value="upcoming">Upcoming</option>
+          <option value="completed">Completed</option>
+        </select>
+      </label>
+
+      <button type="button" className="filter-reset" onClick={onReset}>Reset filters</button>
     </div>
   )
 }

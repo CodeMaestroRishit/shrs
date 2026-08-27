@@ -2,6 +2,7 @@ import { getQuickFilterRange } from '../utils/date'
 
 const PRESETS = [
   { key: 'today', label: 'Today' },
+  { key: 'tomorrow', label: 'Tomorrow' },
   { key: 'this-week', label: 'This Week' },
   { key: 'next-week', label: 'Next Week' },
   { key: 'this-month', label: 'This Month' },

@@ -42,6 +42,16 @@ export function toDateInputValue(date) {
   return `${year}-${month}-${day}`
 }
 
+export function getEventStatus(event, now = new Date()) {
+  const start = new Date(event.start_time)
+  const end = new Date(event.end_time || event.start_time)
+
+  if (end < now) return 'completed'
+  if (start <= now) return 'ongoing'
+  if (start.getTime() - now.getTime() <= 48 * 60 * 60 * 1000) return 'soon'
+  return 'upcoming'
+}
+
 function addDays(date, days) {
   const copy = new Date(date)
   copy.setDate(copy.getDate() + days)
@@ -59,6 +69,10 @@ export function getQuickFilterRange(preset) {
   switch (preset) {
     case 'today':
       return { startDate: toDateInputValue(today), endDate: toDateInputValue(today) }
+    case 'tomorrow': {
+      const tomorrow = addDays(today, 1)
+      return { startDate: toDateInputValue(tomorrow), endDate: toDateInputValue(tomorrow) }
+    }
     case 'this-week':
       return { startDate: toDateInputValue(startOfWeek), endDate: toDateInputValue(addDays(startOfWeek, 6)) }
     case 'next-week':

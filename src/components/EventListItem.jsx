@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { formatEventDate, formatEventDateRange } from '../utils/date'
+import EventStatusBadge from './EventStatusBadge'
 
 function CalendarIcon() {
   return (
@@ -48,6 +49,11 @@ export default function EventListItem({ event, clubName, posterVariant = 'a' }) 
       </div>
 
       <div className="event-list-body">
+        <div className="event-list-kicker">
+          <EventStatusBadge event={event} />
+          {clubName && <span className="event-list-organizer">{clubName}</span>}
+          {event.category && <span className="event-list-category">{event.category}</span>}
+        </div>
         <div className="event-list-meta">
           <span>
             <CalendarIcon /> {formatEventDate(event.start_time)}
@@ -72,7 +78,7 @@ export default function EventListItem({ event, clubName, posterVariant = 'a' }) 
           <Link to={`/events/${event.id}`} className="event-list-readmore">
             Read more →
           </Link>
-          {clubName && <span className="event-list-tag">{clubName}</span>}
+          {clubName && <span className="event-list-tag">Hosted by {clubName}</span>}
         </div>
       </div>
     </article>

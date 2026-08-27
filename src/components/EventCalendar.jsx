@@ -35,7 +35,7 @@ export default function EventCalendar({ selectedDate, onSelectDate, eventDates }
   }
 
   return (
-    <div className="event-calendar">
+    <div className="event-calendar" aria-label="Filter events by date">
       <div className="event-calendar-header">
         <button type="button" aria-label="Previous month" onClick={() => changeMonth(-1)}>
           ‹
@@ -45,6 +45,8 @@ export default function EventCalendar({ selectedDate, onSelectDate, eventDates }
           ›
         </button>
       </div>
+
+      <p className="event-calendar-help">Select a date to filter events.</p>
 
       <div className="event-calendar-weekdays">
         {WEEKDAY_LABELS.map((label) => (
@@ -73,6 +75,8 @@ export default function EventCalendar({ selectedDate, onSelectDate, eventDates }
                 .filter(Boolean)
                 .join(' ')}
               onClick={() => handleDayClick(date)}
+              aria-pressed={isSelected}
+              aria-label={`${date.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}${hasEvents ? ', has events' : ''}`}
             >
               {date.getDate()}
               {hasEvents && <span className="event-calendar-dot" />}
