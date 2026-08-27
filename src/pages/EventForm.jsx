@@ -6,6 +6,7 @@ import EventCard from '../components/EventCard'
 import ImageUpload from '../components/ImageUpload'
 import LoadingSpinner from '../components/LoadingSpinner'
 import { toDatetimeLocalValue } from '../utils/date'
+import { extractYouTubeId } from '../utils/youtube'
 
 const emptyForm = {
   club_id: '',
@@ -15,6 +16,8 @@ const emptyForm = {
   start_time: '',
   end_time: '',
   image_url: '',
+  detail_poster_url: '',
+  youtube_url: '',
 }
 
 export default function EventForm() {
@@ -62,6 +65,8 @@ export default function EventForm() {
             start_time: toDatetimeLocalValue(data.start_time),
             end_time: toDatetimeLocalValue(data.end_time),
             image_url: data.image_url ?? '',
+            detail_poster_url: data.detail_poster_url ?? '',
+            youtube_url: data.youtube_video_url ?? '',
           })
         }
         setLoading(false)
@@ -74,6 +79,12 @@ export default function EventForm() {
 
   async function handleSubmit(e) {
     e.preventDefault()
+
+    if (form.youtube_url && !extractYouTubeId(form.youtube_url)) {
+      setError("That doesn't look like a YouTube link — paste a youtube.com/watch or youtu.be URL.")
+      return
+    }
+
     setSaving(true)
     setError(null)
 
@@ -85,6 +96,8 @@ export default function EventForm() {
       start_time: form.start_time ? new Date(form.start_time).toISOString() : null,
       end_time: form.end_time ? new Date(form.end_time).toISOString() : null,
       image_url: form.image_url || null,
+      detail_poster_url: form.detail_poster_url || null,
+      youtube_video_url: form.youtube_url || null,
     }
 
     const { error: saveError } = isEditing
@@ -134,7 +147,7 @@ export default function EventForm() {
           </label>
 
           <label>
-            Location
+            Venue
             <input type="text" value={form.location} onChange={(e) => update('location', e.target.value)} />
           </label>
 
@@ -161,6 +174,38 @@ export default function EventForm() {
               <p>Select a club first.</p>
             )}
           </label>
+          <p className="form-hint">Shown as the thumbnail on cards and listings across the site.</p>
+
+          <label>
+            Detailed poster
+            {form.club_id ? (
+              <ImageUpload
+                clubId={form.club_id}
+                value={form.detail_poster_url}
+                onChange={(url) => update('detail_poster_url', url)}
+              />
+            ) : (
+              <p>Select a club first.</p>
+            )}
+          </label>
+          <p className="form-hint">
+            Optional. A bigger, more detailed poster shown only on this event's own page — not on
+            cards or listings.
+          </p>
+
+          <label>
+            YouTube video link
+            <input
+              type="url"
+              placeholder="https://youtube.com/watch?v=…"
+              value={form.youtube_url}
+              onChange={(e) => update('youtube_url', e.target.value)}
+            />
+          </label>
+          <p className="form-hint">
+            Optional. Shown as an embedded preview on the event page — hosted by YouTube, so it
+            costs us no storage or bandwidth.
+          </p>
 
           {error && <p className="form-error">{error}</p>}
 
@@ -175,6 +220,13 @@ export default function EventForm() {
             event={form}
             clubName={adminClubs.find((c) => c.id === form.club_id)?.name}
           />
+
+          {form.detail_poster_url && (
+            <div className="event-form-preview-detail-poster">
+              <h3>Detailed poster preview</h3>
+              <img src={form.detail_poster_url} alt="Detailed poster preview" />
+            </div>
+          )}
         </div>
       </div>
     </div>

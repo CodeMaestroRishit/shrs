@@ -3,10 +3,14 @@ import { Link, useParams } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
 <<<<<<< Updated upstream
 import { formatEventDateRange } from '../utils/date'
+<<<<<<< HEAD
 =======
 import { formatEventDateRange, getEventStatus } from '../utils/date'
 import { extractYouTubeId } from '../utils/youtube'
 >>>>>>> Stashed changes
+=======
+import { extractYouTubeId } from '../utils/youtube'
+>>>>>>> origin/main
 import LoadingSpinner from '../components/LoadingSpinner'
 import EventRating from '../components/EventRating'
 import EventStatusBadge from '../components/EventStatusBadge'
@@ -56,6 +60,7 @@ export default function EventDetail() {
   if (error) return <p className="form-error">{error}</p>
   if (!event) return <p>Event not found.</p>
 
+<<<<<<< HEAD
   const mapsQuery = event.location ? encodeURIComponent(event.location) : ''
 <<<<<<< Updated upstream
 =======
@@ -117,6 +122,10 @@ export default function EventDetail() {
     setCalendarAdded(true)
   }
 >>>>>>> Stashed changes
+=======
+  const mapsQuery = event.location ? encodeURIComponent(`RV University, Bengaluru, ${event.location}`) : ''
+  const youtubeId = extractYouTubeId(event.youtube_video_url)
+>>>>>>> origin/main
 
   return (
     <div className="page event-detail">
@@ -152,6 +161,24 @@ export default function EventDetail() {
             View on map
           </a>
         </p>
+      )}
+
+      {event.detail_poster_url && (
+        <div className="event-detail-poster">
+          <img src={event.detail_poster_url} alt={`${event.title} poster`} />
+        </div>
+      )}
+
+      {youtubeId && (
+        <div className="event-detail-video">
+          <iframe
+            src={`https://www.youtube-nocookie.com/embed/${youtubeId}`}
+            title={`${event.title} — video`}
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        </div>
       )}
 
       {event.description && <p className="event-detail-description">{event.description}</p>}
