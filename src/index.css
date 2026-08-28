@@ -1936,3 +1936,82 @@ html { scroll-behavior: smooth; }
   .event-detail-header h1 { font-size: clamp(2rem, 12vw, 3rem); }
   .event-location-link { width: 100%; justify-content: center; min-height: 44px; }
 }
+
+/* ---------------- home quick-links: student vs admin distinction ---------------- */
+
+.quick-link--admin {
+  position: relative;
+}
+
+.quick-link-badge {
+  display: inline-block;
+  margin: .35rem 0 0;
+  padding: .2rem .5rem;
+  border: 1px solid var(--color-brand);
+  color: var(--color-brand);
+  font-size: .68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+.quick-link--admin .button-ghost {
+  border-color: var(--border);
+  color: var(--ink);
+}
+
+.quick-link--admin .button-ghost:hover {
+  border-color: var(--color-brand);
+  color: var(--color-brand);
+}
+
+/* ---------------- unauthorized page ---------------- */
+
+.unauthorized-page {
+  display: flex;
+  justify-content: center;
+  padding-top: clamp(2rem, 6vw, 4rem);
+}
+
+.unauthorized-card {
+  max-width: 46ch;
+  padding: clamp(1.75rem, 4vw, 2.5rem);
+  border: 2px solid var(--border);
+  background: var(--surface);
+  text-align: center;
+}
+
+.unauthorized-card h1 {
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  margin: 0 0 .9rem;
+}
+
+.unauthorized-card p {
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+
+.unauthorized-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .75rem;
+  margin-top: 1.5rem;
+}
+
+.unauthorized-actions .button-primary,
+.unauthorized-actions .button-ghost {
+  width: 100%;
+  max-width: 26ch;
+  text-align: center;
+}
+
+.unauthorized-actions .button-ghost {
+  border-color: var(--border);
+  color: var(--ink-soft);
+}
+
+.unauthorized-actions .button-ghost:hover {
+  border-color: var(--color-brand);
+  color: var(--color-brand);
+}
