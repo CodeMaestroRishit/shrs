@@ -1,10 +1,6 @@
-# Campus Events
+
 
 Branch test: update from the `shiv` branch.
-
-College Club & Events Platform. Students browse events; club admins manage
-events for the clubs they administer. React (Vite) frontend, Supabase
-(Auth + Postgres + Storage) backend.
 
 ## Stack used
 
