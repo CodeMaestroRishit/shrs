@@ -77,6 +77,12 @@ export default function EventDetail() {
           {venue.name && <div><span className="event-detail-meta-label">Venue</span><p>{venue.name}</p>{mapsUrl && <a href={mapsUrl} target="_blank" rel="noreferrer" className="event-location-link"><MapPinIcon /> View on Maps <span aria-hidden="true">↗</span></a>}</div>}
         </div>
 
+        {event.registration_url && (
+          <a href={event.registration_url} target="_blank" rel="noreferrer" className="button-primary event-detail-register">
+            Register now <span aria-hidden="true">↗</span>
+          </a>
+        )}
+
         {event.description && <section className="event-detail-section"><h2>About this event</h2><p className="event-detail-description">{event.description}</p></section>}
 
         {event.detail_poster_url && <section className="event-detail-section"><h2>Event details</h2><div className="event-detail-poster"><img src={event.detail_poster_url} alt={`${event.title} detailed poster`} /></div></section>}

@@ -1857,6 +1857,13 @@ html { scroll-behavior: smooth; }
   transform: translateY(1px);
 }
 
+.event-detail-register {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  margin-top: 1.3rem;
+}
+
 .event-detail-section {
   max-width: 70ch;
   margin-top: 1.75rem;
@@ -1913,6 +1920,11 @@ html { scroll-behavior: smooth; }
 
   .event-detail-meta-label {
     font-size: .82rem;
+  }
+
+  .event-detail-register {
+    display: flex;
+    justify-content: center;
   }
 }
 

@@ -20,6 +20,7 @@ const emptyForm = {
   image_url: '',
   detail_poster_url: '',
   youtube_url: '',
+  registration_url: '',
 }
 
 export default function EventForm() {
@@ -68,6 +69,7 @@ export default function EventForm() {
             image_url: data.image_url ?? '',
             detail_poster_url: data.detail_poster_url ?? '',
             youtube_url: data.youtube_video_url ?? '',
+            registration_url: data.registration_url ?? '',
           })
         }
         setLoading(false)
@@ -98,6 +100,10 @@ export default function EventForm() {
       setError('Enter a valid YouTube watch or short URL.')
       return
     }
+    if (form.registration_url && !isValidVenueLink(form.registration_url)) {
+      setError('Registration link must be a full http:// or https:// URL.')
+      return
+    }
 
     setSaving(true)
     setError(null)
@@ -112,6 +118,7 @@ export default function EventForm() {
       image_url: form.image_url || null,
       detail_poster_url: form.detail_poster_url || null,
       youtube_video_url: form.youtube_url || null,
+      registration_url: form.registration_url.trim() || null,
     }
 
     const { error: saveError } = isEditing
@@ -189,6 +196,23 @@ export default function EventForm() {
               </div>
             </div>
             <p className="form-hint">Add a Google Maps or venue URL so attendees can open the location directly.</p>
+          </fieldset>
+
+          <fieldset className="event-form-section">
+            <legend>Registration</legend>
+            <label className="form-field">
+              Registration link <span className="form-optional">Optional</span>
+              <input
+                type="url"
+                value={form.registration_url}
+                onChange={(e) => update('registration_url', e.target.value)}
+                placeholder="https://forms.gle/..."
+              />
+            </label>
+            <p className="form-hint">
+              A Google Form or sign-up link. When set, a "Register now" button appears at the top
+              of the event page.
+            </p>
           </fieldset>
 
           <fieldset className="event-form-section">
