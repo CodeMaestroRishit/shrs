@@ -1,23 +1,22 @@
 import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-
-// Placeholder crest — swap for the real RV University logo file (e.g. an
-// <img src="/rvu-logo.svg" .../>) once you have the brand asset.
-function LogoMark() {
-  return (
-    <img src="/rvu-logo.png" className="navbar-logo" alt="RV University" />
-  )
-}
+import rvuLogo from '../assets/rvu-logo.png'
 
 export default function Navbar() {
   const { user, profile, isAnyClubAdmin, signInWithGoogle, signOut } = useAuth()
 
   return (
     <header className="navbar">
-      <Link to="/" className="navbar-brand">
-        <LogoMark />
-        <span className="navbar-brand-label">RVibe</span>
+      <Link to="/" className="navbar-brand" title="RVibe · RV University">
+        <img src={rvuLogo} alt="RV University Logo" className="navbar-logo-img" />
+
+        <span className="navbar-brand-divider" aria-hidden="true" />
+
+        <div className="navbar-app-title">
+          <span>RVIBE</span>
+        </div>
       </Link>
+
       <nav className="navbar-links">
         <Link to="/">Home</Link>
         <Link to="/events">Upcoming</Link>

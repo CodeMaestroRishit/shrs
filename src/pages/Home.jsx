@@ -51,11 +51,6 @@ const STORY_BEATS = [
   { image: '/story/infra-library.jpg', alt: 'Art installation of books in the RVU library', line: 'This is where you disappear into a book for an afternoon.' },
 ]
 
-// A smooth S-curve connecting each beat's node, instead of a straight line --
-// it bends toward whichever side that beat's photo sits on. The curve's shape
-// is measured from real rendered node positions (so it's always accurate
-// across screen sizes) and its gold portion "draws in" as the section scrolls
-// through the viewport.
 function StoryScroller() {
   const sectionRef = useRef(null)
   const nodeRefs = useRef([])
@@ -257,41 +252,44 @@ function HomeFooter({ onSignIn }) {
 
 export default function Home() {
   const { user, isAnyClubAdmin, signInWithGoogle } = useAuth()
+
   if (user) return <Navigate to={isAnyClubAdmin ? '/admin' : '/events'} replace />
 
-  return <div className="page home-page">
-    <section className="home-hero">
-      <HeroScatter />
-      <div className="hero-content">
-        <p className="home-eyebrow">RV UNIVERSITY / BENGALURU / CAMPUS LIFE</p>
-        <h1 className="home-title">RV<em>ibe.</em></h1>
-        <p className="home-sub">Everything happening across RVU&apos;s clubs, in one place.</p>
-        <div className="hero-actions">
-          <button type="button" className="hero-signin" onClick={() => signInWithGoogle()}>Sign in to get started</button>
+  return (
+    <div className="page home-page">
+      <section className="home-hero">
+        <HeroScatter />
+        <div className="hero-content">
+          <p className="home-eyebrow">RV UNIVERSITY / BENGALURU / CAMPUS LIFE</p>
+          <h1 className="home-title">RV<em>ibe.</em></h1>
+          <p className="home-sub">Everything happening across RVU&apos;s clubs, in one place.</p>
+          <div className="hero-actions">
+            <button type="button" className="hero-signin" onClick={() => signInWithGoogle()}>Sign in to get started</button>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section className="home-manifesto">
-      <h2 className="manifesto-quote">The syllabus ends in four years. The people you meet in a club don&apos;t.</h2>
-      <p>Discover the people, clubs and gatherings that make RVU move. Free to attend. Open to everyone on campus.</p>
-    </section>
+      <section className="home-manifesto">
+        <h2 className="manifesto-quote">The syllabus ends in four years. The people you meet in a club don&apos;t.</h2>
+        <p>Discover the people, clubs and gatherings that make RVU move. Free to attend. Open to everyone on campus.</p>
+      </section>
 
-    <StoryScroller />
+      <StoryScroller />
 
-    <section className="home-gate">
-      <div className="home-gate-photo">
-        <img src="/story/gate.jpg" alt="RV University main gate" loading="lazy" />
-      </div>
-      <div className="home-gate-text">
-        <p className="home-eyebrow">On campus</p>
-        <h2>Every event on this page happens somewhere real.</h2>
-        <p>From A Block to the amphitheatre, RVU&apos;s campus is where clubs actually meet, build, rehearse and compete. Browse what&apos;s on and go see it in person.</p>
-        <Link to="/events" className="button-primary">See what&apos;s on</Link>
-      </div>
-    </section>
+      <section className="home-gate">
+        <div className="home-gate-photo">
+          <img src="/story/gate.jpg" alt="RV University main gate" loading="lazy" />
+        </div>
+        <div className="home-gate-text">
+          <p className="home-eyebrow">On campus</p>
+          <h2>Every event on this page happens somewhere real.</h2>
+          <p>From A Block to the amphitheatre, RVU&apos;s campus is where clubs actually meet, build, rehearse and compete. Browse what&apos;s on and go see it in person.</p>
+          <Link to="/events" className="button-primary">See what&apos;s on</Link>
+        </div>
+      </section>
 
-    <StatsStrip />
-    <HomeFooter onSignIn={() => signInWithGoogle()} />
-  </div>
+      <StatsStrip />
+      <HomeFooter onSignIn={() => signInWithGoogle()} />
+    </div>
+  )
 }

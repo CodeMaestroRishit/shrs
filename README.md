@@ -1,6 +1,4 @@
-
-
-Branch test: update from the `shiv` branch.
+College Club & Events Platform. Students browse events; club admins manage events for the clubs they administer. React (Vite) frontend, Supabase (Auth + Postgres + Storage) backend.
 
 ## Stack used
 
@@ -19,8 +17,6 @@ Branch test: update from the `shiv` branch.
 3. In **Authentication → URL Configuration**, add your local dev URL
    (`http://localhost:5173`) and your Vercel URL to the redirect allow list.
 
-woah
-  
 ## 2. Run the migrations
 
 The SQL in `supabase/migrations/` is plain Postgres SQL, run in order:
@@ -169,6 +165,7 @@ src/
   pages/                  EventsDiscovery, EventDetail, ClubProfile, AdminDashboard, EventForm, Login
   utils/youtube.js        Parses a YouTube video id out of a pasted URL
 supabase/migrations/      SQL migrations, run in numeric order
+```
 
 ## Keeping storage on the free tier
 
@@ -182,8 +179,3 @@ supabase/migrations/      SQL migrations, run in numeric order
   an uploaded file — rendered as an embedded `youtube-nocookie.com`
   iframe on the event detail page, so YouTube carries the bandwidth and
   storage, not Supabase.
-```
-
-
-
-ghee

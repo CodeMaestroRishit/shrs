@@ -2,9 +2,14 @@ import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
 import { formatEventDateRange } from '../utils/date'
-import { extractYouTubeId } from '../utils/youtube'
 import { parseVenue } from '../utils/venue'
+import { extractYouTubeId } from '../utils/youtube'
 import LoadingSpinner from '../components/LoadingSpinner'
+import BookmarkButton from '../components/BookmarkButton'
+import EventCountdown from '../components/EventCountdown'
+import RelatedEventsCarousel from '../components/RelatedEventsCarousel'
+import ShareButton from '../components/ShareButton'
+import AddToCalendarButton from '../components/AddToCalendarButton'
 
 function MapPinIcon() {
   return (
@@ -18,24 +23,70 @@ function MapPinIcon() {
 export default function EventDetail() {
   const { eventId } = useParams()
   const [event, setEvent] = useState(null)
+  const [relatedEvents, setRelatedEvents] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
   useEffect(() => {
     let cancelled = false
     setLoading(true)
-    supabase
-      .from('events')
-      .select('*, clubs(id, name, logo_url)')
-      .eq('id', eventId)
-      .single()
-      .then(({ data, error: queryError }) => {
-        if (cancelled) return
-        if (queryError) setError(queryError.message)
-        else setEvent(data)
+
+    async function loadEventAndRelated() {
+      const { data, error: queryError } = await supabase
+        .from('events')
+        .select('*, clubs(id, name, logo_url)')
+        .eq('id', eventId)
+        .single()
+
+      if (cancelled) return
+
+      if (queryError) {
+        setError(queryError.message)
         setLoading(false)
+        return
+      }
+
+      setEvent(data)
+
+      // Fetch candidate related events
+      const { data: candidates } = await supabase
+        .from('events')
+        .select('*, clubs(id, name)')
+        .neq('id', eventId)
+
+      if (cancelled || !candidates) {
+        setLoading(false)
+        return
+      }
+
+      const now = Date.now()
+      const currentStart = data.start_time ? new Date(data.start_time).getTime() : now
+
+      const scored = candidates.map((cand) => {
+        let score = 0
+        if (cand.club_id && cand.club_id === data.club_id) {
+          score += 50
+        }
+        const candStart = cand.start_time ? new Date(cand.start_time).getTime() : 0
+        if (candStart >= now) {
+          score += 30
+        }
+        const diffDays = Math.abs(candStart - currentStart) / (1000 * 60 * 60 * 24)
+        score += Math.max(0, 20 - diffDays)
+
+        return { cand, score }
       })
-    return () => { cancelled = true }
+
+      scored.sort((a, b) => b.score - a.score)
+      setRelatedEvents(scored.slice(0, 6).map((s) => s.cand))
+      setLoading(false)
+    }
+
+    loadEventAndRelated()
+
+    return () => {
+      cancelled = true
+    }
   }, [eventId])
 
   if (loading) return <LoadingSpinner />
@@ -69,19 +120,31 @@ export default function EventDetail() {
               <span>{event.clubs.name}</span>
             </Link>
           )}
-          <h1>{event.title}</h1>
+          <div className="event-detail-title-row">
+            <h1>{event.title}</h1>
+            <BookmarkButton eventId={event.id} showLabel className="event-detail-bookmark-btn" />
+          </div>
         </header>
 
         <div className="event-detail-meta">
           <div><span className="event-detail-meta-label">When</span><p>{formatEventDateRange(event.start_time, event.end_time)}</p></div>
           {venue.name && <div><span className="event-detail-meta-label">Venue</span><p>{venue.name}</p>{mapsUrl && <a href={mapsUrl} target="_blank" rel="noreferrer" className="event-location-link"><MapPinIcon /> View on Maps <span aria-hidden="true">↗</span></a>}</div>}
+          <div>
+            <span className="event-detail-meta-label">Status</span>
+            <EventCountdown startTime={event.start_time} endTime={event.end_time} />
+          </div>
         </div>
 
-        {event.registration_url && (
-          <a href={event.registration_url} target="_blank" rel="noreferrer" className="button-primary event-detail-register">
-            Register now <span aria-hidden="true">↗</span>
-          </a>
-        )}
+        {/* Interactive Actions Row */}
+        <div className="event-detail-actions-row">
+          {event.registration_url && (
+            <a href={event.registration_url} target="_blank" rel="noreferrer" className="button-primary event-detail-register">
+              Register now <span aria-hidden="true">↗</span>
+            </a>
+          )}
+          <AddToCalendarButton event={event} />
+          <ShareButton title={event.title} />
+        </div>
 
         {event.description && <section className="event-detail-section"><h2>About this event</h2><p className="event-detail-description">{event.description}</p></section>}
 
@@ -98,6 +161,9 @@ export default function EventDetail() {
             </p>
           </section>
         )}
+
+        {/* Amazon-Style Horizontal Related Events Carousel */}
+        <RelatedEventsCarousel events={relatedEvents} />
       </div>
     </article>
   )

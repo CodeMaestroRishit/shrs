@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { formatEventDate, formatEventDateRange } from '../utils/date'
 import { parseVenue } from '../utils/venue'
+import BookmarkButton from './BookmarkButton'
 
 function CalendarIcon() {
   return (
@@ -72,9 +73,12 @@ export default function EventListItem({ event, clubName, posterVariant = 'a' }) 
         {event.description && <p className="event-list-desc">{event.description}</p>}
 
         <div className="event-list-footer">
-          <Link to={`/events/${event.id}`} className="event-list-readmore">
-            Read more →
-          </Link>
+          <div className="event-list-footer-actions">
+            <Link to={`/events/${event.id}`} className="event-list-readmore">
+              Read more →
+            </Link>
+            {event.id && <BookmarkButton eventId={event.id} className="event-list-bookmark" />}
+          </div>
           {clubName && <span className="event-list-tag">{clubName}</span>}
         </div>
       </div>

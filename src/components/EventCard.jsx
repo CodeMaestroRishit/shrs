@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom'
 import { formatEventDateRange } from '../utils/date'
 import { parseVenue } from '../utils/venue'
+import HappeningBadge from './HappeningBadge'
+import BookmarkButton from './BookmarkButton'
 
 export default function EventCard({ event, clubName }) {
   const venue = parseVenue(event.location)
@@ -8,6 +10,8 @@ export default function EventCard({ event, clubName }) {
   return (
     <Link to={event.id ? `/events/${event.id}` : '#'} className="event-card">
       <div className="event-card-poster">
+        <HappeningBadge startTime={event.start_time} endTime={event.end_time} />
+        {event.id && <BookmarkButton eventId={event.id} className="event-card-bookmark" />}
         {event.image_url ? (
           <img src={event.image_url} alt={event.title || 'Event poster'} />
         ) : (
