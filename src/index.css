@@ -4478,3 +4478,93 @@ html { scroll-behavior: smooth; }
   }
 }
 
+/* ---------------- first-visit preload screen: "Our vibe." -> "RVibe" ---------------- */
+
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: var(--color-dark);
+  animation: preloader-exit 500ms ease 2400ms forwards;
+}
+
+.preloader-bg {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(180deg, rgba(17, 15, 13, 0.6), rgba(17, 15, 13, 0.85)), url('/preloader-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  animation: preloader-bg-in 1000ms ease 100ms forwards;
+}
+
+.preloader-text {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(10px) scale(0.97);
+  animation:
+    preloader-text-in 600ms ease 300ms forwards,
+    preloader-text-out 500ms ease 2200ms forwards;
+}
+
+.preloader-eyebrow {
+  font-size: clamp(0.65rem, 1.6vw, 0.78rem);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  margin-bottom: 0.75rem;
+  max-width: 26ch;
+}
+
+.preloader-vibe {
+  font-size: clamp(1.7rem, 5.5vw, 2.9rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #fff;
+  max-width: 20ch;
+}
+
+.preloader-highlight {
+  font-style: normal;
+  font-weight: 900;
+  color: var(--color-brand);
+}
+
+@keyframes preloader-bg-in {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes preloader-text-in {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes preloader-text-out {
+  to {
+    opacity: 0;
+    transform: translateY(-8px) scale(1.02);
+  }
+}
+
+@keyframes preloader-exit {
+  to {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
+
+
