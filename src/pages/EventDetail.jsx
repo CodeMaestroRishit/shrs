@@ -88,6 +88,16 @@ export default function EventDetail() {
         {event.detail_poster_url && <section className="event-detail-section"><h2>Event details</h2><div className="event-detail-poster"><img src={event.detail_poster_url} alt={`${event.title} detailed poster`} /></div></section>}
 
         {youtubeId && <section className="event-detail-section"><h2>Watch</h2><div className="event-detail-video"><iframe src={`https://www.youtube-nocookie.com/embed/${youtubeId}`} title={`${event.title} video`} loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen /></div></section>}
+
+        {event.contact_phone && (
+          <section className="event-detail-section event-detail-contact">
+            <h2>Questions?</h2>
+            <p>
+              Reach out at{' '}
+              <a href={`tel:${event.contact_phone.replace(/[^\d+]/g, '')}`}>{event.contact_phone}</a>
+            </p>
+          </section>
+        )}
       </div>
     </article>
   )

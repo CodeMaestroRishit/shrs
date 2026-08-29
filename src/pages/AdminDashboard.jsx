@@ -66,6 +66,7 @@ export default function AdminDashboard() {
               <th>Title</th>
               <th>Club</th>
               <th>Date</th>
+              <th>Contact</th>
               <th></th>
             </tr>
           </thead>
@@ -77,6 +78,7 @@ export default function AdminDashboard() {
                 </td>
                 <td>{event.clubs?.name}</td>
                 <td className="mono">{formatEventDateRange(event.start_time, event.end_time)}</td>
+                <td className="mono">{event.contact_phone || '—'}</td>
                 <td className="admin-events-table-actions">
                   <Link to={`/admin/events/${event.id}/edit`} className="button-ghost">
                     Edit

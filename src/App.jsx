@@ -17,9 +17,30 @@ export default function App() {
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/events" element={<EventsDiscovery />} />
-          <Route path="/events/:eventId" element={<EventDetail />} />
-          <Route path="/clubs/:clubId" element={<ClubProfile />} />
+          <Route
+            path="/events"
+            element={
+              <ProtectedRoute>
+                <EventsDiscovery />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/events/:eventId"
+            element={
+              <ProtectedRoute>
+                <EventDetail />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/clubs/:clubId"
+            element={
+              <ProtectedRoute>
+                <ClubProfile />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/unauthorized" element={<Unauthorized />} />
           <Route
             path="/admin"

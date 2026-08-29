@@ -21,6 +21,7 @@ const emptyForm = {
   detail_poster_url: '',
   youtube_url: '',
   registration_url: '',
+  contact_phone: '',
 }
 
 export default function EventForm() {
@@ -70,6 +71,7 @@ export default function EventForm() {
             detail_poster_url: data.detail_poster_url ?? '',
             youtube_url: data.youtube_video_url ?? '',
             registration_url: data.registration_url ?? '',
+            contact_phone: data.contact_phone ?? '',
           })
         }
         setLoading(false)
@@ -119,6 +121,7 @@ export default function EventForm() {
       detail_poster_url: form.detail_poster_url || null,
       youtube_video_url: form.youtube_url || null,
       registration_url: form.registration_url.trim() || null,
+      contact_phone: form.contact_phone.trim() || null,
     }
 
     const { error: saveError } = isEditing
@@ -199,7 +202,7 @@ export default function EventForm() {
           </fieldset>
 
           <fieldset className="event-form-section">
-            <legend>Registration</legend>
+            <legend>Registration &amp; contact</legend>
             <label className="form-field">
               Registration link <span className="form-optional">Optional</span>
               <input
@@ -212,6 +215,18 @@ export default function EventForm() {
             <p className="form-hint">
               A Google Form or sign-up link. When set, a "Register now" button appears at the top
               of the event page.
+            </p>
+            <label className="form-field">
+              Contact number <span className="form-optional">Optional</span>
+              <input
+                type="tel"
+                value={form.contact_phone}
+                onChange={(e) => update('contact_phone', e.target.value)}
+                placeholder="+91 98765 43210"
+              />
+            </label>
+            <p className="form-hint">
+              Shown on the event page so attendees with questions have someone to reach out to.
             </p>
           </fieldset>
 
