@@ -85,7 +85,7 @@ export default function EventsDiscovery() {
       <section className="discovery-hero">
         <div className="discovery-hero-text">
           <p className="discovery-hero-eyebrow">RV University · Bengaluru</p>
-          <h1>Campus Events</h1>
+          <h1>RVibe</h1>
           <p className="discovery-hero-sub">
             Everything happening across RVU's clubs — workshops, screenings, tournaments, and more — in one place.
           </p>

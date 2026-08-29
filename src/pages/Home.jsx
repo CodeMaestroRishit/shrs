@@ -178,7 +178,7 @@ function StatsStrip() {
   }, [])
 
   return (
-    <section ref={ref} className={`stats-strip${inView ? ' is-visible' : ''}`} aria-label="Campus Events by the numbers">
+    <section ref={ref} className={`stats-strip${inView ? ' is-visible' : ''}`} aria-label="RVibe by the numbers">
       <div className="stat-tile">
         <strong>{stats.students ?? '—'}</strong>
         <span>Students joined</span>
@@ -248,7 +248,7 @@ function HomeFooter({ onSignIn }) {
       </div>
 
       <div className="footer-bottom">
-        <span>RV University · Campus Events</span>
+        <span>RVibe · RV University</span>
         <span>&copy; {new Date().getFullYear()}</span>
       </div>
     </footer>
@@ -264,7 +264,7 @@ export default function Home() {
       <HeroScatter />
       <div className="hero-content">
         <p className="home-eyebrow">RV UNIVERSITY / BENGALURU / CAMPUS LIFE</p>
-        <h1 className="home-title">Campus <em>Events.</em></h1>
+        <h1 className="home-title">RV<em>ibe.</em></h1>
         <p className="home-sub">Everything happening across RVU&apos;s clubs, in one place.</p>
         <div className="hero-actions">
           <button type="button" className="hero-signin" onClick={() => signInWithGoogle()}>Sign in to get started</button>

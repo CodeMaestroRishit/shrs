@@ -16,7 +16,7 @@ export default function Navbar() {
     <header className="navbar">
       <Link to="/" className="navbar-brand">
         <LogoMark />
-        <span className="navbar-brand-label">Campus Events</span>
+        <span className="navbar-brand-label">RVibe</span>
       </Link>
       <nav className="navbar-links">
         <Link to="/">Home</Link>
