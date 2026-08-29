@@ -21,7 +21,7 @@ export default function Preloader() {
       // Storage unavailable (private mode etc.) — the animation still plays once for this load.
     }
 
-    const timer = setTimeout(() => setVisible(false), 1500)
+    const timer = setTimeout(() => setVisible(false), 2900)
     return () => clearTimeout(timer)
   }, [visible])
 
@@ -29,6 +29,7 @@ export default function Preloader() {
 
   return (
     <div className="preloader" aria-hidden="true">
+      <div className="preloader-bg" />
       <div className="preloader-text">
         <span className="preloader-eyebrow">Every club · every event · every friend</span>
         <span className="preloader-vibe">

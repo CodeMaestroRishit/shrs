@@ -4486,11 +4486,24 @@ html { scroll-behavior: smooth; }
   z-index: 999;
   display: grid;
   place-items: center;
+  overflow: hidden;
   background: var(--color-dark);
-  animation: preloader-exit 450ms ease 1050ms forwards;
+  animation: preloader-exit 500ms ease 2400ms forwards;
+}
+
+.preloader-bg {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(180deg, rgba(17, 15, 13, 0.6), rgba(17, 15, 13, 0.85)), url('/preloader-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  animation: preloader-bg-in 1000ms ease 100ms forwards;
 }
 
 .preloader-text {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -4498,8 +4511,8 @@ html { scroll-behavior: smooth; }
   opacity: 0;
   transform: translateY(10px) scale(0.97);
   animation:
-    preloader-text-in 550ms ease 150ms forwards,
-    preloader-text-out 400ms ease 850ms forwards;
+    preloader-text-in 600ms ease 300ms forwards,
+    preloader-text-out 500ms ease 2200ms forwards;
 }
 
 .preloader-eyebrow {
@@ -4524,6 +4537,12 @@ html { scroll-behavior: smooth; }
   font-style: normal;
   font-weight: 900;
   color: var(--color-brand);
+}
+
+@keyframes preloader-bg-in {
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes preloader-text-in {
