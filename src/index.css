@@ -131,24 +131,27 @@ a {
 .navbar-brand {
   display: flex;
   align-items: center;
-  gap: 0.7rem;
-  color: var(--ink);
+  gap: 0.75rem;
+  color: #ffffff;
+  text-decoration: none;
 }
 
 .logo-mark {
   width: 40px;
   height: 40px;
   border-radius: 10px;
-  background: linear-gradient(155deg, var(--brand), var(--brand-strong));
-  color: #fff;
+  background: var(--color-brand, #C8A86B);
+  color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 0.95rem;
-  letter-spacing: 0.02em;
+  font-weight: 900;
+  font-size: 1rem;
+  letter-spacing: 0.03em;
   flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(200, 168, 107, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .navbar-brand-text {
@@ -159,15 +162,20 @@ a {
 
 .navbar-brand-text strong {
   font-family: var(--font-display);
-  font-size: 1.02rem;
-  font-weight: 600;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #ffffff !important;
+  letter-spacing: -0.01em;
 }
 
 .navbar-brand-text small {
   font-size: 0.72rem;
-  color: var(--muted);
-  letter-spacing: 0.02em;
+  font-weight: 700;
+  color: var(--color-brand, #C8A86B) !important;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
+
 
 .navbar-links {
   display: flex;
