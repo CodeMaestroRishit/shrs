@@ -1,5 +1,12 @@
 import { Link } from 'react-router-dom'
 import { formatEventDate, formatEventDateRange } from '../utils/date'
+function parseVenue(location) {
+  if (!location) return { name: '', link: '' }
+  if (typeof location === 'string') return { name: location, link: '' }
+  return { name: location.name || '', link: location.link || '' }
+}
+
+import BookmarkButton from './BookmarkButton'
 
 function CalendarIcon() {
   return (
@@ -37,6 +44,8 @@ function PinIcon() {
 }
 
 export default function EventListItem({ event, clubName, posterVariant = 'a' }) {
+  const venue = parseVenue(event.location)
+
   return (
     <article className="event-list-item">
       <div className={`event-list-thumb poster-variant-${posterVariant}`}>
@@ -55,9 +64,9 @@ export default function EventListItem({ event, clubName, posterVariant = 'a' }) 
           <span>
             <ClockIcon /> {formatEventDateRange(event.start_time, event.end_time).split('·').slice(1).join('·').trim()}
           </span>
-          {event.location && (
+          {venue.name && (
             <span>
-              <PinIcon /> {event.location}
+              <PinIcon /> {venue.name}
             </span>
           )}
         </div>
@@ -69,12 +78,16 @@ export default function EventListItem({ event, clubName, posterVariant = 'a' }) 
         {event.description && <p className="event-list-desc">{event.description}</p>}
 
         <div className="event-list-footer">
-          <Link to={`/events/${event.id}`} className="event-list-readmore">
-            Read more →
-          </Link>
+          <div className="event-list-footer-actions">
+            <Link to={`/events/${event.id}`} className="event-list-readmore">
+              Read more →
+            </Link>
+            {event.id && <BookmarkButton eventId={event.id} className="event-list-bookmark" />}
+          </div>
           {clubName && <span className="event-list-tag">{clubName}</span>}
         </div>
       </div>
     </article>
   )
 }
+
