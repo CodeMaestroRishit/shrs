@@ -42,7 +42,7 @@ export default function EventListItem({ event, clubName, posterVariant = 'a' }) 
   const venue = parseVenue(event.location)
 
   return (
-    <article className="event-list-item">
+    <Link to={event.id ? `/events/${event.id}` : '#'} className="event-list-item">
       <div className={`event-list-thumb poster-variant-${posterVariant}`}>
         {event.image_url ? (
           <img src={event.image_url} alt={event.title} />
@@ -66,22 +66,18 @@ export default function EventListItem({ event, clubName, posterVariant = 'a' }) 
           )}
         </div>
 
-        <h3 className="event-list-title">
-          <Link to={`/events/${event.id}`}>{event.title}</Link>
-        </h3>
+        <h3 className="event-list-title">{event.title}</h3>
 
         {event.description && <p className="event-list-desc">{event.description}</p>}
 
         <div className="event-list-footer">
           <div className="event-list-footer-actions">
-            <Link to={`/events/${event.id}`} className="event-list-readmore">
-              Read more →
-            </Link>
+            <span className="event-list-readmore">Read more →</span>
             {event.id && <BookmarkButton eventId={event.id} className="event-list-bookmark" />}
           </div>
           {clubName && <span className="event-list-tag">{clubName}</span>}
         </div>
       </div>
-    </article>
+    </Link>
   )
 }
