@@ -2,22 +2,12 @@ import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
 import { formatEventDateRange } from '../utils/date'
-function extractYouTubeId(url) {
-  if (!url) return null
-  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/
-  const match = url.match(regExp)
-  return match && match[2].length === 11 ? match[2] : null
-}
-
-function parseVenue(location) {
-  if (!location) return { name: '', link: '' }
-  if (typeof location === 'string') return { name: location, link: '' }
-  return { name: location.name || '', link: location.link || '' }
-}
-
+import { parseVenue } from '../utils/venue'
+import { extractYouTubeId } from '../utils/youtube'
 import LoadingSpinner from '../components/LoadingSpinner'
 import BookmarkButton from '../components/BookmarkButton'
 import EventCountdown from '../components/EventCountdown'
+
 import RelatedEventsCarousel from '../components/RelatedEventsCarousel'
 import ShareButton from '../components/ShareButton'
 import AddToCalendarButton from '../components/AddToCalendarButton'

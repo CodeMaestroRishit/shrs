@@ -1,12 +1,8 @@
 import { Link } from 'react-router-dom'
 import { formatEventDate, formatEventDateRange } from '../utils/date'
-function parseVenue(location) {
-  if (!location) return { name: '', link: '' }
-  if (typeof location === 'string') return { name: location, link: '' }
-  return { name: location.name || '', link: location.link || '' }
-}
-
+import { parseVenue } from '../utils/venue'
 import BookmarkButton from './BookmarkButton'
+
 
 function CalendarIcon() {
   return (
