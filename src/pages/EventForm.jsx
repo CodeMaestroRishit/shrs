@@ -114,7 +114,7 @@ export default function EventForm() {
       title,
       description: form.description.trim() || null,
       // Kept in the existing field so no database migration is required.
-      location: serializeVenue(form.venue_name, form.venue_link) || null,
+      location: serializeVenue({ name: form.venue_name, link: form.venue_link }) || null,
       start_time: form.start_time ? new Date(form.start_time).toISOString() : null,
       end_time: form.end_time ? new Date(form.end_time).toISOString() : null,
       image_url: form.image_url || null,
@@ -256,7 +256,7 @@ export default function EventForm() {
 
         <aside className="event-form-preview" aria-label="Event card preview">
           <p className="eyebrow">Live preview</p>
-          <EventCard event={{ ...form, location: serializeVenue(form.venue_name, form.venue_link) }} clubName={selectedClub} />
+          <EventCard event={{ ...form, location: serializeVenue({ name: form.venue_name, link: form.venue_link }) }} clubName={selectedClub} />
           {form.detail_poster_url && <div className="event-form-preview-detail-poster"><h2>Long poster preview</h2><img src={form.detail_poster_url} alt="Long poster preview" /></div>}
         </aside>
       </div>
