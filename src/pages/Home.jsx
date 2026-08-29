@@ -169,11 +169,11 @@ function StatsStrip() {
 
   useEffect(() => {
     Promise.all([
-      supabase.from('clubs').select('id', { count: 'exact', head: true }),
-      supabase.from('events').select('id', { count: 'exact', head: true }),
+      supabase.rpc('get_club_count'),
+      supabase.rpc('get_event_count'),
       supabase.rpc('get_student_count'),
     ]).then(([clubsRes, eventsRes, studentsRes]) => {
-      setStats({ clubs: clubsRes.count ?? 0, events: eventsRes.count ?? 0, students: studentsRes.data ?? 0 })
+      setStats({ clubs: clubsRes.data ?? 0, events: eventsRes.data ?? 0, students: studentsRes.data ?? 0 })
     })
   }, [])
 
