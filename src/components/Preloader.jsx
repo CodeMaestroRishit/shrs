@@ -30,8 +30,10 @@ export default function Preloader() {
   return (
     <div className="preloader" aria-hidden="true">
       <div className="preloader-text">
-        <span className="preloader-eyebrow">Welcome to</span>
-        <span className="preloader-vibe">Our vibe.</span>
+        <span className="preloader-eyebrow">Every club · every event · every friend</span>
+        <span className="preloader-vibe">
+          This is <em className="preloader-highlight">our vibe</em>.
+        </span>
       </div>
     </div>
   )
