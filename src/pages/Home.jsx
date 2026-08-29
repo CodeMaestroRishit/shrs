@@ -261,7 +261,7 @@ export default function Home() {
         <HeroScatter />
         <div className="hero-content">
           <p className="home-eyebrow">RV UNIVERSITY / BENGALURU / CAMPUS LIFE</p>
-          <h1 className="home-title">RV<em>ibe.</em></h1>
+          <h1 className="home-title"><span className="title-rv">RV</span><em>ibe.</em></h1>
           <p className="home-sub">Everything happening across RVU&apos;s clubs, in one place.</p>
           <div className="hero-actions">
             <button type="button" className="hero-signin" onClick={() => signInWithGoogle()}>Sign in to get started</button>

@@ -4408,3 +4408,18 @@ html { scroll-behavior: smooth; }
   }
 }
 
+/* ---------------- home hero: "RV" bold gold, "ibe." small white ---------------- */
+
+.home-title .title-rv {
+  color: var(--color-brand);
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.home-title em {
+  color: #fff;
+  font-style: normal;
+  font-weight: 400;
+  text-transform: lowercase;
+}
+
