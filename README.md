@@ -1,10 +1,4 @@
-# Campus Events
-
-Branch test: update from the `shiv` branch.
-
-College Club & Events Platform. Students browse events; club admins manage
-events for the clubs they administer. React (Vite) frontend, Supabase
-(Auth + Postgres + Storage) backend.
+College Club & Events Platform. Students browse events; club admins manage events for the clubs they administer. React (Vite) frontend, Supabase (Auth + Postgres + Storage) backend.
 
 ## Stack used
 
@@ -23,8 +17,6 @@ events for the clubs they administer. React (Vite) frontend, Supabase
 3. In **Authentication → URL Configuration**, add your local dev URL
    (`http://localhost:5173`) and your Vercel URL to the redirect allow list.
 
-woah
-  
 ## 2. Run the migrations
 
 The SQL in `supabase/migrations/` is plain Postgres SQL, run in order:
@@ -35,6 +27,15 @@ The SQL in `supabase/migrations/` is plain Postgres SQL, run in order:
   allowed domain at the database level**
 - `0003_rls_policies.sql` — Row Level Security policies
 - `0004_storage.sql` — the `event-posters` storage bucket + its policies
+- `0005_lock_down_allowed_email_domains.sql` — tightens RLS on the allowed
+  email domains table
+- `0006_youtube_and_storage_limits.sql` — adds `events.youtube_video_url`
+  and caps the poster bucket at 2 MB / image mime types only, to protect
+  the Supabase free tier's storage quota
+- `0007_reduce_poster_size_limit.sql` — tightens the poster cap to 500 KB
+  to cut into egress further
+- `0008_detail_poster.sql` — adds `events.detail_poster_url`, a second
+  optional poster shown only on the event's own page
 
 Run them via the Supabase SQL Editor (paste each file's contents in order),
 or with the Supabase CLI:
@@ -162,5 +163,19 @@ src/
   context/AuthContext.jsx Session, profile, and admin-club-ids state
   components/             EventCard, EventFilters, Navbar, ImageUpload, ProtectedRoute
   pages/                  EventsDiscovery, EventDetail, ClubProfile, AdminDashboard, EventForm, Login
+  utils/youtube.js        Parses a YouTube video id out of a pasted URL
 supabase/migrations/      SQL migrations, run in numeric order
 ```
+
+## Keeping storage on the free tier
+
+- Event posters: capped server-side at 500 KB and image mime types only
+  (`0006_youtube_and_storage_limits.sql`, `0007_reduce_poster_size_limit.sql`),
+  with a matching client-side
+  check in `ImageUpload` so admins get an immediate error instead of a
+  silent rejection. Admins are asked to compress posters (tinypng.com,
+  squoosh.app) before uploading.
+- Event video: stored as a YouTube link (`events.youtube_video_url`), not
+  an uploaded file — rendered as an embedded `youtube-nocookie.com`
+  iframe on the event detail page, so YouTube carries the bandwidth and
+  storage, not Supabase.

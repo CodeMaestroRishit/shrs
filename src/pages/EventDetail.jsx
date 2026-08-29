@@ -7,12 +7,9 @@ import { extractYouTubeId } from '../utils/youtube'
 import LoadingSpinner from '../components/LoadingSpinner'
 import BookmarkButton from '../components/BookmarkButton'
 import EventCountdown from '../components/EventCountdown'
-
 import RelatedEventsCarousel from '../components/RelatedEventsCarousel'
 import ShareButton from '../components/ShareButton'
 import AddToCalendarButton from '../components/AddToCalendarButton'
-
-
 
 function MapPinIcon() {
   return (
@@ -51,7 +48,7 @@ export default function EventDetail() {
 
       setEvent(data)
 
-      // Fetch potential related events
+      // Fetch candidate related events
       const { data: candidates } = await supabase
         .from('events')
         .select('*, clubs(id, name)')
@@ -65,19 +62,15 @@ export default function EventDetail() {
       const now = Date.now()
       const currentStart = data.start_time ? new Date(data.start_time).getTime() : now
 
-      // Rank candidate events client-side
       const scored = candidates.map((cand) => {
         let score = 0
-        // 1. Same club match
         if (cand.club_id && cand.club_id === data.club_id) {
           score += 50
         }
-        // 2. Upcoming events over completed
         const candStart = cand.start_time ? new Date(cand.start_time).getTime() : 0
         if (candStart >= now) {
           score += 30
         }
-        // 3. Proximity in date/time
         const diffDays = Math.abs(candStart - currentStart) / (1000 * 60 * 60 * 24)
         score += Math.max(0, 20 - diffDays)
 
@@ -155,10 +148,19 @@ export default function EventDetail() {
 
         {event.description && <section className="event-detail-section"><h2>About this event</h2><p className="event-detail-description">{event.description}</p></section>}
 
-
         {event.detail_poster_url && <section className="event-detail-section"><h2>Event details</h2><div className="event-detail-poster"><img src={event.detail_poster_url} alt={`${event.title} detailed poster`} /></div></section>}
 
         {youtubeId && <section className="event-detail-section"><h2>Watch</h2><div className="event-detail-video"><iframe src={`https://www.youtube-nocookie.com/embed/${youtubeId}`} title={`${event.title} video`} loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen /></div></section>}
+
+        {event.contact_phone && (
+          <section className="event-detail-section event-detail-contact">
+            <h2>Questions?</h2>
+            <p>
+              Reach out at{' '}
+              <a href={`tel:${event.contact_phone.replace(/[^\d+]/g, '')}`}>{event.contact_phone}</a>
+            </p>
+          </section>
+        )}
 
         {/* Amazon-Style Horizontal Related Events Carousel */}
         <RelatedEventsCarousel events={relatedEvents} />
@@ -166,6 +168,3 @@ export default function EventDetail() {
     </article>
   )
 }
-
-
-

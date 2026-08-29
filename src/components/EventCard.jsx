@@ -4,7 +4,6 @@ import { parseVenue } from '../utils/venue'
 import HappeningBadge from './HappeningBadge'
 import BookmarkButton from './BookmarkButton'
 
-
 export default function EventCard({ event, clubName }) {
   const venue = parseVenue(event.location)
 
@@ -39,5 +38,3 @@ export default function EventCard({ event, clubName }) {
     </Link>
   )
 }
-
-

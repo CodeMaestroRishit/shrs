@@ -3,7 +3,6 @@ import { formatEventDate, formatEventDateRange } from '../utils/date'
 import { parseVenue } from '../utils/venue'
 import BookmarkButton from './BookmarkButton'
 
-
 function CalendarIcon() {
   return (
     <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
@@ -86,4 +85,3 @@ export default function EventListItem({ event, clubName, posterVariant = 'a' }) 
     </article>
   )
 }
-

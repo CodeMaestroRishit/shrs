@@ -18,7 +18,8 @@ export default function Navbar() {
       </Link>
 
       <nav className="navbar-links">
-        <Link to="/events">Events</Link>
+        <Link to="/">Home</Link>
+        <Link to="/events">Upcoming</Link>
         {isAnyClubAdmin && <Link to="/admin">Admin Dashboard</Link>}
         {user ? (
           <div className="navbar-user">

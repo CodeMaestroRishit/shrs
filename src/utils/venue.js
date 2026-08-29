@@ -34,3 +34,21 @@ export function parseVenue(location) {
 
   return { name, link }
 }
+
+export function isValidVenueLink(url) {
+  if (!url) return true
+  try {
+    const parsed = new URL(url)
+    return parsed.protocol === 'http:' || parsed.protocol === 'https:'
+  } catch {
+    return false
+  }
+}
+
+export function serializeVenue({ name = '', link = '' }) {
+  const trimmedName = name.trim()
+  const trimmedLink = link.trim()
+  if (!trimmedName && !trimmedLink) return ''
+  if (!trimmedLink) return trimmedName
+  return JSON.stringify({ name: trimmedName, link: trimmedLink })
+}
