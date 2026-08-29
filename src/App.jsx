@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router-dom'
 import Navbar from './components/Navbar'
+import Preloader from './components/Preloader'
 import ProtectedRoute from './components/ProtectedRoute'
 import Home from './pages/Home'
 import EventsDiscovery from './pages/EventsDiscovery'
@@ -13,6 +14,7 @@ import NotFound from './pages/NotFound'
 export default function App() {
   return (
     <>
+      <Preloader />
       <Navbar />
       <main>
         <Routes>
