@@ -1,69 +1,61 @@
-import { useState, useEffect } from 'react'
-
-const STORAGE_KEY = 'rvu_saved_event_ids'
-
-export function getSavedEventIds() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY)
-    if (!raw) return []
-    const parsed = JSON.parse(raw)
-    return Array.isArray(parsed) ? parsed : []
-  } catch (err) {
-    console.error('Error reading saved events from localStorage:', err)
-    return []
-  }
-}
-
-export function isEventSaved(eventId) {
-  if (!eventId) return false
-  const saved = getSavedEventIds()
-  return saved.includes(String(eventId))
-}
-
-export function toggleSaveEvent(eventId) {
-  if (!eventId) return false
-  const idStr = String(eventId)
-  const saved = getSavedEventIds()
-  const exists = saved.includes(idStr)
-  let updated
-
-  if (exists) {
-    updated = saved.filter((id) => id !== idStr)
-  } else {
-    updated = [...saved, idStr]
-  }
-
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(updated))
-    window.dispatchEvent(new CustomEvent('rvu-saved-events-changed', { detail: updated }))
-  } catch (err) {
-    console.error('Error saving event to localStorage:', err)
-  }
-
-  return !exists
-}
+import { useCallback, useEffect, useState } from 'react'
+import { supabase } from '../lib/supabaseClient'
+import { useAuth } from '../context/AuthContext'
 
 export function useSavedEvents() {
-  const [savedIds, setSavedIds] = useState(() => getSavedEventIds())
+  const { user } = useAuth()
+  const [savedIds, setSavedIds] = useState([])
 
   useEffect(() => {
-    function handleChange() {
-      setSavedIds(getSavedEventIds())
+    if (!user) {
+      setSavedIds([])
+      return
     }
 
-    window.addEventListener('rvu-saved-events-changed', handleChange)
-    window.addEventListener('storage', handleChange)
+    let cancelled = false
+    supabase
+      .from('saved_events')
+      .select('event_id')
+      .eq('user_id', user.id)
+      .then(({ data }) => {
+        if (cancelled) return
+        setSavedIds((data ?? []).map((row) => row.event_id))
+      })
 
     return () => {
-      window.removeEventListener('rvu-saved-events-changed', handleChange)
-      window.removeEventListener('storage', handleChange)
+      cancelled = true
     }
-  }, [])
+  }, [user])
+
+  const isSaved = useCallback((eventId) => savedIds.includes(eventId), [savedIds])
+
+  const toggleSave = useCallback(
+    async (eventId) => {
+      if (!user || !eventId) return
+
+      if (savedIds.includes(eventId)) {
+        setSavedIds((current) => current.filter((id) => id !== eventId))
+        const { error } = await supabase
+          .from('saved_events')
+          .delete()
+          .eq('user_id', user.id)
+          .eq('event_id', eventId)
+        if (error) setSavedIds((current) => [...current, eventId])
+      } else {
+        setSavedIds((current) => [...current, eventId])
+        const { error } = await supabase
+          .from('saved_events')
+          .insert({ user_id: user.id, event_id: eventId })
+        if (error) setSavedIds((current) => current.filter((id) => id !== eventId))
+      }
+    },
+    [user, savedIds]
+  )
 
   return {
     savedIds,
     count: savedIds.length,
-    isSaved: (id) => savedIds.includes(String(id)),
-    toggleSave: (id) => toggleSaveEvent(id),
+    isSaved,
+    toggleSave,
   }
 }

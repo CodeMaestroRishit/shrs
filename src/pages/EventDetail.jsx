@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
 import { formatEventDateRange } from '../utils/date'
 import { parseVenue } from '../utils/venue'
@@ -20,8 +20,17 @@ function MapPinIcon() {
   )
 }
 
+function BackIcon() {
+  return (
+    <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true">
+      <path d="M9.5 3 5 8l4.5 5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
 export default function EventDetail() {
   const { eventId } = useParams()
+  const navigate = useNavigate()
   const [event, setEvent] = useState(null)
   const [relatedEvents, setRelatedEvents] = useState([])
   const [loading, setLoading] = useState(true)
@@ -98,8 +107,17 @@ export default function EventDetail() {
   const mapsUrl = venue.link || (mapsQuery ? `https://maps.google.com/?q=${mapsQuery}` : '')
   const youtubeId = extractYouTubeId(event.youtube_video_url)
 
+  function handleBack() {
+    if (window.history.state?.idx > 0) navigate(-1)
+    else navigate('/events')
+  }
+
   return (
     <article className="page event-detail">
+      <button type="button" className="event-detail-back" onClick={handleBack}>
+        <BackIcon /> Back
+      </button>
+
       {event.image_url && (
         <div className="event-detail-hero">
           <div

@@ -9,6 +9,21 @@ import { toDatetimeLocalValue } from '../utils/date'
 import { extractYouTubeId } from '../utils/youtube'
 import { isValidVenueLink, parseVenue, serializeVenue } from '../utils/venue'
 
+const WORD_LIMIT = 200
+
+function countWords(text) {
+  return text.trim() ? text.trim().split(/\s+/).length : 0
+}
+
+function WordCount({ text }) {
+  const count = countWords(text)
+  return (
+    <span className={`form-word-count${count > WORD_LIMIT ? ' is-over-limit' : ''}`}>
+      {count}/{WORD_LIMIT} words
+    </span>
+  )
+}
+
 const emptyForm = {
   club_id: '',
   title: '',
@@ -34,6 +49,7 @@ export default function EventForm() {
   const [loading, setLoading] = useState(isEditing)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState(null)
+  const [invalidFields, setInvalidFields] = useState(new Set())
 
   useEffect(() => {
     if (adminClubIds.length === 0) return
@@ -80,33 +96,75 @@ export default function EventForm() {
 
   function update(field, value) {
     setForm((current) => ({ ...current, [field]: value }))
+    setInvalidFields((current) => {
+      if (!current.has(field)) return current
+      const next = new Set(current)
+      next.delete(field)
+      return next
+    })
+  }
+
+  function fieldClass(field, base = '') {
+    return invalidFields.has(field) ? `${base} is-invalid`.trim() : base
   }
 
   async function handleSubmit(e) {
     e.preventDefault()
     const title = form.title.trim()
+    const invalid = new Set()
+    const errors = []
 
-    if (!title) {
-      setError('Add an event title before publishing.')
-      return
+    if (!form.club_id) {
+      invalid.add('club_id')
+      errors.push('Select a club before publishing.')
     }
-    if (form.end_time && new Date(form.end_time) < new Date(form.start_time)) {
-      setError('The end time must be after the start time.')
-      return
+    if (!title) {
+      invalid.add('title')
+      errors.push('Add an event title before publishing.')
+    } else if (countWords(title) > WORD_LIMIT) {
+      invalid.add('title')
+      errors.push(`Event title must be ${WORD_LIMIT} words or fewer.`)
+    }
+    if (countWords(form.description) > WORD_LIMIT) {
+      invalid.add('description')
+      errors.push(`Description must be ${WORD_LIMIT} words or fewer.`)
+    }
+    if (countWords(form.venue_name) > WORD_LIMIT) {
+      invalid.add('venue_name')
+      errors.push(`Venue name must be ${WORD_LIMIT} words or fewer.`)
+    }
+    if (countWords(form.contact_phone) > WORD_LIMIT) {
+      invalid.add('contact_phone')
+      errors.push(`Contact number must be ${WORD_LIMIT} words or fewer.`)
+    }
+    if (!form.start_time) {
+      invalid.add('start_time')
+      errors.push('Add a start date and time before publishing.')
+    }
+    if (form.end_time && form.start_time && new Date(form.end_time) < new Date(form.start_time)) {
+      invalid.add('end_time')
+      errors.push('The end time must be after the start time.')
     }
     if (form.venue_link && !isValidVenueLink(form.venue_link)) {
-      setError('Venue link must be a full http:// or https:// URL.')
-      return
+      invalid.add('venue_link')
+      errors.push('Venue link must be a full http:// or https:// URL.')
     }
     if (form.youtube_url && !extractYouTubeId(form.youtube_url)) {
-      setError('Enter a valid YouTube watch or short URL.')
-      return
+      invalid.add('youtube_url')
+      errors.push('Enter a valid YouTube watch or short URL.')
     }
     if (form.registration_url && !isValidVenueLink(form.registration_url)) {
-      setError('Registration link must be a full http:// or https:// URL.')
+      invalid.add('registration_url')
+      errors.push('Registration link must be a full http:// or https:// URL.')
+    }
+
+    if (errors.length > 0) {
+      setInvalidFields(invalid)
+      setError(errors[0])
       return
     }
 
+    setInvalidFields(new Set())
     setSaving(true)
     setError(null)
     const payload = {
@@ -156,7 +214,7 @@ export default function EventForm() {
             {adminClubs.length > 1 && (
               <label className="form-field">
                 Club <span aria-hidden="true">*</span>
-                <select value={form.club_id} onChange={(e) => update('club_id', e.target.value)} required>
+                <select className={fieldClass('club_id')} value={form.club_id} onChange={(e) => update('club_id', e.target.value)} required>
                   <option value="">Select a club</option>
                   {adminClubs.map((club) => <option key={club.id} value={club.id}>{club.name}</option>)}
                 </select>
@@ -164,11 +222,13 @@ export default function EventForm() {
             )}
             <label className="form-field">
               Event title <span aria-hidden="true">*</span>
-              <input type="text" value={form.title} onChange={(e) => update('title', e.target.value)} placeholder="e.g. Design Sprint 2026" required />
+              <input className={fieldClass('title')} type="text" value={form.title} onChange={(e) => update('title', e.target.value)} placeholder="e.g. Design Sprint 2026" required />
+              <WordCount text={form.title} />
             </label>
             <label className="form-field">
               Description
-              <textarea value={form.description} onChange={(e) => update('description', e.target.value)} rows={5} placeholder="Share what attendees can expect." />
+              <textarea className={fieldClass('description')} value={form.description} onChange={(e) => update('description', e.target.value)} rows={5} placeholder="Share what attendees can expect." />
+              <WordCount text={form.description} />
             </label>
           </fieldset>
 
@@ -179,22 +239,22 @@ export default function EventForm() {
                 <p className="form-subheading">Date and time</p>
                 <label className="form-field">
                   Starts <span aria-hidden="true">*</span>
-                  <input type="datetime-local" value={form.start_time} onChange={(e) => update('start_time', e.target.value)} required />
+                  <input className={fieldClass('start_time')} type="datetime-local" value={form.start_time} onChange={(e) => update('start_time', e.target.value)} required />
                 </label>
                 <label className="form-field">
                   Ends <span className="form-optional">Optional</span>
-                  <input type="datetime-local" value={form.end_time} onChange={(e) => update('end_time', e.target.value)} min={form.start_time || undefined} />
+                  <input className={fieldClass('end_time')} type="datetime-local" value={form.end_time} onChange={(e) => update('end_time', e.target.value)} min={form.start_time || undefined} />
                 </label>
               </div>
               <div className="form-logistics-group">
                 <p className="form-subheading">Venue</p>
                 <label className="form-field">
                   Venue name
-                  <input type="text" value={form.venue_name} onChange={(e) => update('venue_name', e.target.value)} placeholder="e.g. Main Auditorium" />
+                  <input className={fieldClass('venue_name')} type="text" value={form.venue_name} onChange={(e) => update('venue_name', e.target.value)} placeholder="e.g. Main Auditorium" />
                 </label>
                 <label className="form-field">
                   Venue link <span className="form-optional">Optional</span>
-                  <input type="url" value={form.venue_link} onChange={(e) => update('venue_link', e.target.value)} placeholder="https://maps.google.com/..." />
+                  <input className={fieldClass('venue_link')} type="url" value={form.venue_link} onChange={(e) => update('venue_link', e.target.value)} placeholder="https://maps.google.com/..." />
                 </label>
               </div>
             </div>
@@ -206,6 +266,7 @@ export default function EventForm() {
             <label className="form-field">
               Registration link <span className="form-optional">Optional</span>
               <input
+                className={fieldClass('registration_url')}
                 type="url"
                 value={form.registration_url}
                 onChange={(e) => update('registration_url', e.target.value)}
@@ -219,6 +280,7 @@ export default function EventForm() {
             <label className="form-field">
               Contact number <span className="form-optional">Optional</span>
               <input
+                className={fieldClass('contact_phone')}
                 type="tel"
                 value={form.contact_phone}
                 onChange={(e) => update('contact_phone', e.target.value)}
@@ -242,7 +304,7 @@ export default function EventForm() {
             </div>
             <label className="form-field">
               YouTube video link <span className="form-optional">Optional</span>
-              <input type="url" placeholder="https://youtube.com/watch?v=..." value={form.youtube_url} onChange={(e) => update('youtube_url', e.target.value)} />
+              <input className={fieldClass('youtube_url')} type="url" placeholder="https://youtube.com/watch?v=..." value={form.youtube_url} onChange={(e) => update('youtube_url', e.target.value)} />
             </label>
             <p className="form-hint">A valid YouTube link is embedded on the event page.</p>
           </fieldset>
