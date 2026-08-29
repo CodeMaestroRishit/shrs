@@ -199,6 +199,62 @@ function StatsStrip() {
   )
 }
 
+const TEAM = ['Rishit Guha', 'Harnith Lokesh', 'Shiv Arora', 'Suviksha VB']
+
+function HomeFooter({ onSignIn }) {
+  return (
+    <footer className="home-footer">
+      <div className="footer-dots" aria-hidden="true" />
+
+      <div className="footer-tagline">
+        <h2>
+          Go find <em>your people.</em>
+        </h2>
+        <button type="button" className="hero-signin" onClick={onSignIn}>
+          Sign in to get started
+        </button>
+      </div>
+
+      <div className="footer-grid">
+        <div className="footer-brand">
+          <img src="/rvu-logo.png" alt="RV University" />
+          <p>Everything happening across RVU&apos;s clubs, in one place.</p>
+        </div>
+
+        <div className="footer-col">
+          <p className="footer-col-title">Explore</p>
+          <Link to="/events">Upcoming events</Link>
+          <button type="button" onClick={onSignIn}>
+            Sign in
+          </button>
+        </div>
+
+        <div className="footer-col">
+          <p className="footer-col-title">Contact</p>
+          <a href="mailto:rishitg.btech23@rvu.edu.in">rishitg.btech23@rvu.edu.in</a>
+          <a href="mailto:harnithsl.btech23@rvu.edu.in">harnithsl.btech23@rvu.edu.in</a>
+          <a href="mailto:shivav.btech23@rvu.edu.in">shivav.btech23@rvu.edu.in</a>
+          <a href="mailto:suvikshav.btech23@rvu.edu.in">suvikshav.btech23@rvu.edu.in</a>
+        </div>
+
+        <div className="footer-col">
+          <p className="footer-col-title">Built by</p>
+          <ul>
+            {TEAM.map((name) => (
+              <li key={name}>{name}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <div className="footer-bottom">
+        <span>RV University · Campus Events</span>
+        <span>&copy; {new Date().getFullYear()}</span>
+      </div>
+    </footer>
+  )
+}
+
 export default function Home() {
   const { user, isAnyClubAdmin, signInWithGoogle } = useAuth()
   if (user) return <Navigate to={isAnyClubAdmin ? '/admin' : '/events'} replace />
@@ -230,11 +286,12 @@ export default function Home() {
       <div className="home-gate-text">
         <p className="home-eyebrow">On campus</p>
         <h2>Every event on this page happens somewhere real.</h2>
-        <p>From F Block to the amphitheatre, RVU&apos;s campus is where clubs actually meet, build, rehearse and compete. Browse what&apos;s on and go see it in person.</p>
+        <p>From A Block to the amphitheatre, RVU&apos;s campus is where clubs actually meet, build, rehearse and compete. Browse what&apos;s on and go see it in person.</p>
         <Link to="/events" className="button-primary">See what&apos;s on</Link>
       </div>
     </section>
 
     <StatsStrip />
+    <HomeFooter onSignIn={() => signInWithGoogle()} />
   </div>
 }
