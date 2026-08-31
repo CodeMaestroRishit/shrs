@@ -8,7 +8,7 @@ import UnifiedEventCarousel from '../components/UnifiedEventCarousel'
 import ViewModeToggle from '../components/ViewModeToggle'
 import FullEventCalendarView from '../components/FullEventCalendarView'
 import LoadingSpinner from '../components/LoadingSpinner'
-import { toDateInputValue } from '../utils/date'
+import { sortEventsPastLast, toDateInputValue } from '../utils/date'
 import { useSavedEvents } from '../utils/savedEvents'
 
 const emptyFilters = { search: '', clubId: '', startDate: '', endDate: '' }
@@ -91,9 +91,7 @@ export default function EventsDiscovery() {
   }
 
   const isSavedPreset = activePreset === 'saved'
-  const displayedEvents = isSavedPreset
-    ? events.filter((e) => isSaved(e.id))
-    : events
+  const displayedEvents = sortEventsPastLast(isSavedPreset ? events.filter((e) => isSaved(e.id)) : events)
 
   const isDefaultView = !filters.search && !filters.clubId && !filters.startDate && (activePreset === 'all' || !activePreset)
 

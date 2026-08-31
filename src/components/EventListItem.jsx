@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom'
-import { formatEventDate, formatEventDateRange } from '../utils/date'
+import { formatEventDate, formatEventDateRange, getHappeningStatus } from '../utils/date'
 import { parseVenue } from '../utils/venue'
 import BookmarkButton from './BookmarkButton'
+import HappeningBadge from './HappeningBadge'
 
 function CalendarIcon() {
   return (
@@ -40,9 +41,10 @@ function PinIcon() {
 
 export default function EventListItem({ event, clubName, posterVariant = 'a' }) {
   const venue = parseVenue(event.location)
+  const isPast = getHappeningStatus(event.start_time, event.end_time)?.type === 'past'
 
   return (
-    <Link to={event.id ? `/events/${event.id}` : '#'} className="event-list-item">
+    <Link to={event.id ? `/events/${event.id}` : '#'} className={`event-list-item${isPast ? ' is-past' : ''}`}>
       <div className={`event-list-thumb poster-variant-${posterVariant}`}>
         {event.image_url ? (
           <img src={event.image_url} alt={event.title} />
@@ -52,6 +54,8 @@ export default function EventListItem({ event, clubName, posterVariant = 'a' }) 
       </div>
 
       <div className="event-list-body">
+        <HappeningBadge startTime={event.start_time} endTime={event.end_time} className="event-list-badge" />
+
         <div className="event-list-meta">
           <span>
             <CalendarIcon /> {formatEventDate(event.start_time)}

@@ -91,7 +91,13 @@ export function getHappeningStatus(startIso, endIso) {
   const endMs = isNaN(end.getTime()) ? defaultEndMs : end.getTime()
 
   // Completed event check
-  if (now.getTime() > endMs) return null
+  if (now.getTime() > endMs) {
+    return {
+      type: 'past',
+      label: 'EVENT OVER',
+      badgeClass: 'happening-badge happening-past',
+    }
+  }
 
   // Happening Now check
   if (start.getTime() <= now.getTime() && now.getTime() <= endMs) {
@@ -186,6 +192,37 @@ export function sortEventsUnified(events = []) {
   upcoming.sort((a, b) => new Date(a.start_time).getTime() - new Date(b.start_time).getTime())
 
   return [...happeningNow, ...upcoming]
+}
+
+/**
+ * Sorts events for the browsable list: events that haven't ended yet stay in
+ * chronological order up top; events that already ended sink to the bottom,
+ * most-recently-ended first, instead of staying stuck at their original
+ * start_time position once they're over.
+ */
+export function sortEventsPastLast(events = []) {
+  if (!events || !events.length) return []
+  const now = Date.now()
+
+  function endMsOf(e) {
+    if (!e.start_time) return 0
+    const startMs = new Date(e.start_time).getTime()
+    const endMs = e.end_time ? new Date(e.end_time).getTime() : startMs + 3 * 60 * 60 * 1000
+    return isNaN(endMs) ? startMs : endMs
+  }
+
+  const active = []
+  const past = []
+
+  events.forEach((e) => {
+    if (endMsOf(e) < now) past.push(e)
+    else active.push(e)
+  })
+
+  active.sort((a, b) => new Date(a.start_time).getTime() - new Date(b.start_time).getTime())
+  past.sort((a, b) => endMsOf(b) - endMsOf(a))
+
+  return [...active, ...past]
 }
 
 

@@ -647,6 +647,15 @@ main {
   box-shadow: var(--shadow);
 }
 
+.event-list-item.is-past {
+  opacity: 0.65;
+}
+
+.event-list-badge {
+  align-self: flex-start;
+  margin-bottom: 0.15rem;
+}
+
 .event-list-thumb {
   width: 108px;
   height: 108px;
@@ -2088,6 +2097,16 @@ html { scroll-behavior: smooth; }
   background: rgba(59, 130, 246, 0.2);
   color: #60a5fa;
   border: 1px solid rgba(59, 130, 246, 0.4);
+}
+
+.happening-past {
+  background: rgba(148, 163, 184, 0.15);
+  color: #8b93a1;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+}
+
+.happening-past .happening-indicator-dot {
+  animation: none;
 }
 
 .happening-indicator-dot {
