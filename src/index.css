@@ -681,6 +681,7 @@ main {
   flex-direction: column;
   gap: 0.35rem;
   min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .event-list-meta {
@@ -787,6 +788,7 @@ main {
 
 .event-card-body {
   padding: 0.85rem;
+  overflow-wrap: anywhere;
 }
 
 .event-card-club {
@@ -1818,6 +1820,7 @@ html { scroll-behavior: smooth; }
   padding: clamp(1.2rem, 3.5vw, 2.25rem);
   border: 1px solid var(--border);
   background: var(--surface);
+  overflow-wrap: anywhere;
   box-shadow: 0 14px 32px rgba(30, 30, 30, .07);
 }
 
@@ -2545,6 +2548,8 @@ html { scroll-behavior: smooth; }
   flex-direction: column;
   align-items: flex-start;
   gap: 0.35rem;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .hero-banner-details-left .happening-badge {
