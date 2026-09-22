@@ -1,9 +1,11 @@
--- A super-admin flag so the site owner can moderate/delete any event
+-- A super-admin flag so the site owners can moderate/delete any event
 -- regardless of which club posted it, not just clubs they're an admin of.
+-- Everyone else stays scoped to their own club(s), unaffected.
 
 alter table public.profiles add column is_super_admin boolean not null default false;
 
-update public.profiles set is_super_admin = true where email = 'rishitg.btech23@rvu.edu.in';
+update public.profiles set is_super_admin = true
+where email in ('rishitg.btech23@rvu.edu.in', 'harnithsl.btech23@rvu.edu.in');
 
 -- Close a privilege-escalation hole this column would otherwise open: the
 -- existing self-update policy let a user change ANY column on their own
