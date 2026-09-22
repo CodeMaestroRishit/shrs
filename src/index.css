@@ -136,23 +136,6 @@ a {
   text-decoration: none;
 }
 
-.navbar-logo-img {
-  height: 48px;
-  width: auto;
-  max-width: 220px;
-  object-fit: contain;
-  mix-blend-mode: screen;
-  display: block;
-}
-
-.navbar-brand-divider {
-  display: inline-block;
-  width: 1px;
-  height: 28px;
-  background: rgba(255, 255, 255, 0.35);
-  margin-inline: 0.4rem;
-}
-
 .navbar-app-title {
   font-family: 'Sora', var(--font-display), sans-serif;
   font-size: 1.02rem;
@@ -1133,7 +1116,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 @keyframes reveal { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
 @media (prefers-color-scheme: dark) { :root:not([data-theme='light']) { --paper:var(--color-background); --surface:var(--color-surface); --surface-sunk:#efefeb; --border:#d9d9d2; --ink:var(--color-text); --ink-soft:#555550; --muted:#74746d; --brand:var(--color-brand); --brand-strong:#b79455; --brand-ink:var(--color-dark); --brand-soft-bg:#f5eddd; --gold:var(--color-brand); --gold-strong:#8e784d; } }
 :root[data-theme='dark'] { --paper:var(--color-background); --surface:var(--color-surface); --surface-sunk:#efefeb; --border:#d9d9d2; --ink:var(--color-text); --ink-soft:#555550; --muted:#74746d; --brand:var(--color-brand); --brand-strong:#b79455; --brand-ink:var(--color-dark); --brand-soft-bg:#f5eddd; --gold:var(--color-brand); --gold-strong:#8e784d; }
-@media (max-width:720px) { .navbar { padding:.7rem 1rem; }.navbar-brand-label { display:none; }.navbar-links { gap:.75rem; }.navbar-links > a:first-child { display:none; }.navbar-user > span { display:none; }.home-hero { padding:2rem 1.35rem 1.35rem; }.home-hero-bottom { align-items:flex-start; gap:1.25rem; }.quick-link { gap:.8rem; }.quick-link .button-primary { align-self:flex-end; }.discovery-hero { padding:1.75rem 1.25rem; }.discovery-hero h1 { font-size: 2.2rem; margin: 0.35rem 0 0.5rem; }.discovery-hero-sub { font-size: 1rem !important; line-height: 1.5; max-width: 100%; }.discovery-layout { gap:1.25rem; } .navbar-logo-img { height: 38px; max-width: 170px; } .navbar-app-title { font-size: 0.85rem; letter-spacing: 0.08em; } }
+@media (max-width:720px) { .navbar { padding:.7rem 1rem; }.navbar-brand-label { display:none; }.navbar-links { gap:.75rem; }.navbar-links > a:first-child { display:none; }.navbar-user > span { display:none; }.home-hero { padding:2rem 1.35rem 1.35rem; }.home-hero-bottom { align-items:flex-start; gap:1.25rem; }.quick-link { gap:.8rem; }.quick-link .button-primary { align-self:flex-end; }.discovery-hero { padding:1.75rem 1.25rem; }.discovery-hero h1 { font-size: 2.2rem; margin: 0.35rem 0 0.5rem; }.discovery-hero-sub { font-size: 1rem !important; line-height: 1.5; max-width: 100%; }.discovery-layout { gap:1.25rem; } .navbar-app-title { font-size: 0.85rem; letter-spacing: 0.08em; } }
 
 
 @media (max-width:480px) { .navbar-logo { width:78px; height:43px; }.navbar-links > a { display:none; }.quick-link { display:grid; grid-template-columns:auto 1fr; }.quick-link .button-primary { grid-column:2; justify-self:start; }.home-hero-bottom { display:block; }.hero-cta { display:inline-block; margin-top:1.5rem; }.home-manifesto { gap:1rem; } }
@@ -4360,7 +4343,7 @@ html { scroll-behavior: smooth; }
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  grid-template-columns: 1.2fr 0.7fr 1.6fr;
   gap: 2rem;
   padding-bottom: clamp(2.5rem, 6vw, 3.5rem);
   border-top: 1px solid rgba(255, 255, 255, 0.14);
@@ -4368,9 +4351,13 @@ html { scroll-behavior: smooth; }
   text-align: left;
 }
 
-.footer-brand img {
-  height: 40px;
-  margin-bottom: 0.9rem;
+.footer-brand-wordmark {
+  margin: 0 0 0.6rem;
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--color-brand);
 }
 
 .footer-brand p {
@@ -4426,6 +4413,14 @@ html { scroll-behavior: smooth; }
 .footer-col ul li {
   font-size: 0.88rem;
   color: rgba(255, 255, 255, 0.72);
+}
+
+.footer-about-text {
+  margin: 0;
+  max-width: 42ch;
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .footer-bottom {

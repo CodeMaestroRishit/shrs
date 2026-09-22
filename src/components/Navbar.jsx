@@ -1,17 +1,12 @@
 import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-import rvuLogo from '../assets/rvu-logo.png'
 
 export default function Navbar() {
   const { user, profile, isAnyClubAdmin, signInWithGoogle, signOut } = useAuth()
 
   return (
     <header className="navbar">
-      <Link to="/" className="navbar-brand" title="RVibe · RV University">
-        <img src={rvuLogo} alt="RV University Logo" className="navbar-logo-img" />
-
-        <span className="navbar-brand-divider" aria-hidden="true" />
-
+      <Link to="/" className="navbar-brand" title="RVibe">
         <div className="navbar-app-title">
           <span>RVIBE</span>
         </div>
