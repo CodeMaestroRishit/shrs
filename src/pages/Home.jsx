@@ -194,8 +194,6 @@ function StatsStrip() {
   )
 }
 
-const TEAM = ['Rishit Guha', 'Harnith Lokesh', 'Shiv Arora', 'Suviksha VB']
-
 function HomeFooter({ onSignIn }) {
   return (
     <footer className="home-footer">
@@ -212,7 +210,7 @@ function HomeFooter({ onSignIn }) {
 
       <div className="footer-grid">
         <div className="footer-brand">
-          <img src="/rvu-logo.png" alt="RV University" />
+          <p className="footer-brand-wordmark">RVibe</p>
           <p>Everything happening across RVU&apos;s clubs, in one place.</p>
         </div>
 
@@ -224,26 +222,18 @@ function HomeFooter({ onSignIn }) {
           </button>
         </div>
 
-        <div className="footer-col">
-          <p className="footer-col-title">Contact</p>
-          <a href="mailto:rishitg.btech23@rvu.edu.in">rishitg.btech23@rvu.edu.in</a>
-          <a href="mailto:harnithsl.btech23@rvu.edu.in">harnithsl.btech23@rvu.edu.in</a>
-          <a href="mailto:shivav.btech23@rvu.edu.in">shivav.btech23@rvu.edu.in</a>
-          <a href="mailto:suvikshav.btech23@rvu.edu.in">suvikshav.btech23@rvu.edu.in</a>
-        </div>
-
-        <div className="footer-col">
-          <p className="footer-col-title">Built by</p>
-          <ul>
-            {TEAM.map((name) => (
-              <li key={name}>{name}</li>
-            ))}
-          </ul>
+        <div className="footer-col footer-col-about">
+          <p className="footer-col-title">About</p>
+          <p className="footer-about-text">
+            An unofficial, student-built project made to make finding and
+            registering for RVU club events easier — a small community
+            service, not affiliated with or endorsed by RV University.
+          </p>
         </div>
       </div>
 
       <div className="footer-bottom">
-        <span>RVibe · RV University</span>
+        <span>RVibe — unofficial, student-run</span>
         <span>&copy; {new Date().getFullYear()}</span>
       </div>
     </footer>
