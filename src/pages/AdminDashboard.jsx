@@ -6,7 +6,7 @@ import { formatEventDateRange } from '../utils/date'
 import LoadingSpinner from '../components/LoadingSpinner'
 
 export default function AdminDashboard() {
-  const { adminClubIds } = useAuth()
+  const { adminClubIds, isSuperAdmin } = useAuth()
   const [events, setEvents] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -14,11 +14,9 @@ export default function AdminDashboard() {
 
   async function loadEvents() {
     setLoading(true)
-    const { data, error: queryError } = await supabase
-      .from('events')
-      .select('*, clubs(name)')
-      .in('club_id', adminClubIds)
-      .order('start_time', { ascending: false })
+    let query = supabase.from('events').select('*, clubs(name)').order('start_time', { ascending: false })
+    if (!isSuperAdmin) query = query.in('club_id', adminClubIds)
+    const { data, error: queryError } = await query
 
     if (queryError) setError(queryError.message)
     else setEvents(data ?? [])
@@ -26,9 +24,9 @@ export default function AdminDashboard() {
   }
 
   useEffect(() => {
-    if (adminClubIds.length > 0) loadEvents()
+    if (isSuperAdmin || adminClubIds.length > 0) loadEvents()
     else setLoading(false)
-  }, [adminClubIds])
+  }, [adminClubIds, isSuperAdmin])
 
   async function handleDelete(eventId) {
     if (!window.confirm('Delete this event? This cannot be undone.')) return
@@ -48,8 +46,10 @@ export default function AdminDashboard() {
     <div className="page admin-dashboard">
       <div className="admin-dashboard-header">
         <div>
-          <h1>Your Club Events</h1>
-          <p className="admin-dashboard-count">{events.length} event{events.length === 1 ? '' : 's'} across your clubs</p>
+          <h1>{isSuperAdmin ? 'All Events' : 'Your Club Events'}</h1>
+          <p className="admin-dashboard-count">
+            {events.length} event{events.length === 1 ? '' : 's'} {isSuperAdmin ? 'across every club' : 'across your clubs'}
+          </p>
         </div>
         <Link to="/admin/events/new" className="button-primary">
           + New Event
@@ -80,9 +80,11 @@ export default function AdminDashboard() {
                 <td className="mono">{formatEventDateRange(event.start_time, event.end_time)}</td>
                 <td className="mono">{event.contact_phone || '—'}</td>
                 <td className="admin-events-table-actions">
-                  <Link to={`/admin/events/${event.id}/edit`} className="button-ghost">
-                    Edit
-                  </Link>
+                  {adminClubIds.includes(event.club_id) && (
+                    <Link to={`/admin/events/${event.id}/edit`} className="button-ghost">
+                      Edit
+                    </Link>
+                  )}
                   <button
                     type="button"
                     className="button-danger-ghost"
