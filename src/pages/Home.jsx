@@ -211,7 +211,7 @@ function HomeFooter({ onSignIn }) {
       <div className="footer-grid">
         <div className="footer-brand">
           <p className="footer-brand-wordmark">RVibe</p>
-          <p>Everything happening across RVU&apos;s clubs, in one place.</p>
+          <p>Every RVU event, all in one place.</p>
         </div>
 
         <div className="footer-col">
@@ -226,7 +226,7 @@ function HomeFooter({ onSignIn }) {
           <p className="footer-col-title">About</p>
           <p className="footer-about-text">
             An unofficial, student-built project made to make finding and
-            registering for RVU club events easier — a small community
+            registering for RVU events easier — a small community
             service, not affiliated with or endorsed by RV University.
           </p>
         </div>
@@ -252,7 +252,7 @@ export default function Home() {
         <div className="hero-content">
           <p className="home-eyebrow">RV UNIVERSITY / BENGALURU / CAMPUS LIFE</p>
           <h1 className="home-title"><span className="title-rv">RV</span><em>ibe.</em></h1>
-          <p className="home-sub">Everything happening across RVU&apos;s clubs, in one place.</p>
+          <p className="home-sub">Every RVU event, all in one place.</p>
           <div className="hero-actions">
             <button type="button" className="hero-signin" onClick={() => signInWithGoogle()}>Sign in to get started</button>
           </div>
@@ -260,8 +260,8 @@ export default function Home() {
       </section>
 
       <section className="home-manifesto">
-        <h2 className="manifesto-quote">The syllabus ends in four years. The people you meet in a club don&apos;t.</h2>
-        <p>Discover the people, clubs and gatherings that make RVU move. Free to attend. Open to everyone on campus.</p>
+        <h2 className="manifesto-quote">The syllabus ends in four years. The people you meet along the way don&apos;t.</h2>
+        <p>Discover the events and experiences that make RVU move. Free to attend. Open to everyone on campus.</p>
       </section>
 
       <StoryScroller />
@@ -273,7 +273,7 @@ export default function Home() {
         <div className="home-gate-text">
           <p className="home-eyebrow">On campus</p>
           <h2>Every event on this page happens somewhere real.</h2>
-          <p>From A Block to the amphitheatre, RVU&apos;s campus is where clubs actually meet, build, rehearse and compete. Browse what&apos;s on and go see it in person.</p>
+          <p>From A Block to the amphitheatre, this is where it all actually happens — workshops, rehearsals, competitions and more. Go see it in person.</p>
           <Link to="/events" className="button-primary">See what&apos;s on</Link>
         </div>
       </section>
