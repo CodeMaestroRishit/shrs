@@ -241,7 +241,7 @@ function HomeFooter({ onSignIn }) {
 }
 
 export default function Home() {
-  const { user, isAnyClubAdmin, signInWithGoogle } = useAuth()
+  const { user, isAnyClubAdmin, signInWithGoogle, authError, clearAuthError } = useAuth()
 
   if (user) return <Navigate to={isAnyClubAdmin ? '/admin' : '/events'} replace />
 
@@ -253,6 +253,12 @@ export default function Home() {
           <p className="home-eyebrow">RV UNIVERSITY / BENGALURU / CAMPUS LIFE</p>
           <h1 className="home-title"><span className="title-rv">RV</span><em>ibe.</em></h1>
           <p className="home-sub">Every RVU event, all in one place.</p>
+          {authError && (
+            <p className="home-auth-error" role="alert">
+              {authError}
+              <button type="button" onClick={clearAuthError} aria-label="Dismiss">×</button>
+            </p>
+          )}
           <div className="hero-actions">
             <button type="button" className="hero-signin" onClick={() => signInWithGoogle()}>Sign in to get started</button>
           </div>
