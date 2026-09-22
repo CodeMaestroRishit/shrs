@@ -3017,6 +3017,9 @@ html { scroll-behavior: smooth; }
   backdrop-filter: blur(8px);
   padding: 0.55rem 0.9rem;
   font-size: 0.88rem;
+  flex-shrink: 0;
+  white-space: nowrap;
+  overflow-wrap: normal;
 }
 
 .hero-banner-bookmark-btn:hover {
@@ -3042,6 +3045,9 @@ html { scroll-behavior: smooth; }
 .event-detail-bookmark-btn {
   padding: 0.5rem 0.85rem;
   font-size: 0.88rem;
+  flex-shrink: 0;
+  white-space: nowrap;
+  overflow-wrap: normal;
 }
 
 /* Quick Filter Tab Saved Badge */
