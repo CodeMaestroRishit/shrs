@@ -83,13 +83,16 @@ export function AuthProvider({ children }) {
     await supabase.auth.signOut()
   }
 
+  const isSuperAdmin = profile?.is_super_admin ?? false
+
   const value = {
     session,
     user: session?.user ?? null,
     profile,
     adminClubIds,
     isClubAdminOf: (clubId) => adminClubIds.includes(clubId),
-    isAnyClubAdmin: adminClubIds.length > 0,
+    isAnyClubAdmin: adminClubIds.length > 0 || isSuperAdmin,
+    isSuperAdmin,
     loading,
     signInWithGoogle,
     signOut,
