@@ -4624,3 +4624,184 @@ html { scroll-behavior: smooth; }
 }
 
 
+
+/* ---------------- push notifications: bell, iOS install prompt, notify toggle ---------------- */
+
+.notification-bell-wrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.notification-bell {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 50%;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.76);
+  cursor: pointer;
+  transition: color 180ms ease, border-color 180ms ease, background-color 180ms ease;
+}
+
+.notification-bell:hover:not(:disabled),
+.notification-bell:focus-visible {
+  color: var(--color-brand);
+  border-color: var(--color-brand);
+}
+
+.notification-bell.is-enabled {
+  color: var(--color-brand);
+  border-color: var(--color-brand);
+  background: rgba(200, 168, 107, 0.14);
+}
+
+.notification-bell:disabled {
+  opacity: 0.55;
+  cursor: progress;
+}
+
+.notification-bell-toast {
+  position: absolute;
+  top: calc(100% + 0.6rem);
+  right: 0;
+  z-index: 60;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  width: max-content;
+  max-width: min(19rem, calc(100vw - 2rem));
+  padding: 0.7rem 0.85rem;
+  border-radius: 10px;
+  background: var(--color-dark);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 0.8rem;
+  line-height: 1.45;
+  text-align: left;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.notification-bell-toast button {
+  flex-shrink: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  color: inherit;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.notification-bell-toast button:hover {
+  opacity: 1;
+}
+
+.ios-install-prompt {
+  position: fixed;
+  left: 50%;
+  bottom: 1rem;
+  transform: translateX(-50%);
+  z-index: 200;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  width: calc(100vw - 1.75rem);
+  max-width: 26rem;
+  padding: 0.85rem 1rem;
+  border-radius: 14px;
+  background: var(--color-dark);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+  color: #fff;
+}
+
+.ios-install-prompt-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.ios-install-prompt-title {
+  margin: 0 0 0.25rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-brand);
+}
+
+.ios-install-prompt-steps {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Keep the share glyph on the text baseline so the instruction reads as a sentence. */
+.ios-install-prompt-steps svg {
+  vertical-align: -3px;
+  margin-inline: 1px;
+}
+
+.ios-install-prompt > button {
+  flex-shrink: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.ios-install-prompt > button:hover {
+  color: #fff;
+}
+
+/* Outranks `.event-form label`, which forces uppercase + column layout. */
+.event-form label.notify-toggle {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 0.65rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-sunk);
+  cursor: pointer;
+  font-size: 0.86rem;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.notify-toggle input[type='checkbox'] {
+  flex-shrink: 0;
+  width: 17px;
+  height: 17px;
+  min-height: 0;
+  margin-top: 0.1rem;
+  accent-color: var(--color-brand);
+  cursor: pointer;
+}
+
+.notify-toggle > span {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.notify-toggle strong {
+  font-size: 0.86rem;
+  color: var(--ink);
+}
+
+.notify-toggle-hint {
+  font-size: 0.78rem;
+  font-weight: 400;
+  line-height: 1.45;
+  color: var(--muted);
+}

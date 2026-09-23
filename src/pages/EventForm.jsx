@@ -37,6 +37,7 @@ const emptyForm = {
   youtube_url: '',
   registration_url: '',
   contact_phone: '',
+  should_notify: true,
 }
 
 export default function EventForm() {
@@ -88,6 +89,8 @@ export default function EventForm() {
             youtube_url: data.youtube_video_url ?? '',
             registration_url: data.registration_url ?? '',
             contact_phone: data.contact_phone ?? '',
+            // Notifications only fire on INSERT, so editing can never re-notify.
+            should_notify: false,
           })
         }
         setLoading(false)
@@ -180,6 +183,7 @@ export default function EventForm() {
       youtube_video_url: form.youtube_url || null,
       registration_url: form.registration_url.trim() || null,
       contact_phone: form.contact_phone.trim() || null,
+      should_notify: form.should_notify,
     }
 
     const { error: saveError } = isEditing
@@ -308,6 +312,23 @@ export default function EventForm() {
             </label>
             <p className="form-hint">A valid YouTube link is embedded on the event page.</p>
           </fieldset>
+
+          {!isEditing && (
+            <label className="notify-toggle">
+              <input
+                type="checkbox"
+                checked={form.should_notify}
+                onChange={(e) => update('should_notify', e.target.checked)}
+              />
+              <span>
+                <strong>Notify students</strong>
+                <span className="notify-toggle-hint">
+                  Sends a push notification to everyone who turned notifications on. Uncheck for
+                  test or draft events.
+                </span>
+              </span>
+            </label>
+          )}
 
           {error && <p className="form-error" role="alert">{error}</p>}
           <div className="event-form-actions">

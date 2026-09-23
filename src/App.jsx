@@ -1,6 +1,7 @@
 import { Route, Routes } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Preloader from './components/Preloader'
+import IOSInstallPrompt from './components/IOSInstallPrompt'
 import ProtectedRoute from './components/ProtectedRoute'
 import Home from './pages/Home'
 import EventsDiscovery from './pages/EventsDiscovery'
@@ -15,6 +16,7 @@ export default function App() {
   return (
     <>
       <Preloader />
+      <IOSInstallPrompt />
       <Navbar />
       <main>
         <Routes>
