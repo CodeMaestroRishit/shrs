@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react'
 import { useAuth } from '../context/AuthContext'
 import {
   canUsePush,
-  getExistingSubscription,
   isIOS,
   isPushSupported,
   isStandalone,
+  isSubscriptionSynced,
   subscribeToPush,
   unsubscribeFromPush,
 } from '../utils/pushNotifications'
@@ -38,8 +38,8 @@ export default function NotificationBell() {
   useEffect(() => {
     if (!user) return
     let cancelled = false
-    getExistingSubscription().then((sub) => {
-      if (!cancelled) setEnabled(Boolean(sub))
+    isSubscriptionSynced(user.id).then((synced) => {
+      if (!cancelled) setEnabled(synced)
     })
     return () => {
       cancelled = true

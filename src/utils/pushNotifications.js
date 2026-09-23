@@ -56,6 +56,24 @@ export async function getExistingSubscription() {
   }
 }
 
+// A browser subscription alone is not enough -- if the matching row is missing
+// (a failed write, or a subscription created outside this flow) the server has
+// no address to send to, so the bell must not claim to be on.
+export async function isSubscriptionSynced(userId) {
+  if (!userId) return false
+  const subscription = await getExistingSubscription()
+  if (!subscription) return false
+
+  const { endpoint } = subscription.toJSON()
+  const { data } = await supabase
+    .from('push_subscriptions')
+    .select('id')
+    .eq('endpoint', endpoint)
+    .maybeSingle()
+
+  return Boolean(data)
+}
+
 export async function subscribeToPush(userId) {
   if (!userId) throw new Error('You must be signed in to enable notifications.')
   if (!canUsePush()) throw new Error('Notifications are not available in this browser.')
@@ -77,11 +95,12 @@ export async function subscribeToPush(userId) {
         applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
       })
     } catch (err) {
-      // Raw messages here are unhelpful ("Registration failed - permission
-      // denied"), and this also fires in private/incognito windows where
-      // Chrome disables the Push API with no way to feature-detect it.
+      // Keep the underlying reason visible -- a generic message here makes this
+      // impossible to diagnose when it fails on someone else's device.
+      console.error('push subscribe failed:', err)
+      const detail = err?.message ? ` (${err.name}: ${err.message})` : ''
       throw new Error(
-        "Couldn't turn on notifications. Private browsing windows don't support them — try a normal window, and check notifications aren't blocked for this site in your browser settings."
+        `Couldn't turn on notifications${detail}. Private browsing windows don't support them — try a normal window, and check notifications aren't blocked for this site.`
       )
     }
   }
