@@ -1,13 +1,25 @@
 import { supabase } from '../lib/supabaseClient'
 
-const VAPID_PUBLIC_KEY = import.meta.env.VITE_VAPID_PUBLIC_KEY
+// Trimmed because a value pasted into a hosting dashboard very easily picks up
+// a trailing newline. That shifts the length by one, which silently breaks the
+// padding maths below and makes atob() throw InvalidCharacterError.
+const VAPID_PUBLIC_KEY = (import.meta.env.VITE_VAPID_PUBLIC_KEY || '').trim()
 
 // The Push API wants the VAPID key as a Uint8Array, but it ships as URL-safe base64.
 function urlBase64ToUint8Array(base64String) {
-  const padding = '='.repeat((4 - (base64String.length % 4)) % 4)
-  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/')
+  // Strip any whitespace anywhere, not just the ends -- none is ever valid here.
+  const clean = String(base64String).replace(/\s/g, '')
+  const padding = '='.repeat((4 - (clean.length % 4)) % 4)
+  const base64 = (clean + padding).replace(/-/g, '+').replace(/_/g, '/')
   const raw = window.atob(base64)
-  return Uint8Array.from([...raw].map((char) => char.charCodeAt(0)))
+  const bytes = Uint8Array.from([...raw].map((char) => char.charCodeAt(0)))
+
+  // A P-256 public key is always 65 bytes; anything else means a truncated or
+  // corrupted value, and failing here is clearer than a cryptic subscribe error.
+  if (bytes.length !== 65) {
+    throw new Error(`VAPID public key decoded to ${bytes.length} bytes, expected 65`)
+  }
+  return bytes
 }
 
 export function isPushSupported() {
