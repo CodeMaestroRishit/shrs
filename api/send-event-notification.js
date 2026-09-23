@@ -5,7 +5,18 @@ import { createClient } from '@supabase/supabase-js'
 // without opening hundreds of sockets at once.
 const BATCH_SIZE = 50
 
+// Wrapper so an unexpected throw returns a readable JSON error instead of
+// Vercel's opaque FUNCTION_INVOCATION_FAILED, which gives nothing to debug from.
 export default async function handler(req, res) {
+  try {
+    return await run(req, res)
+  } catch (err) {
+    console.error('send-event-notification failed:', err)
+    return res.status(500).json({ error: 'Unhandled failure', detail: err?.message ?? String(err) })
+  }
+}
+
+async function run(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' })
   }
@@ -33,9 +44,31 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'Supabase credentials are not configured' })
   }
 
-  webpush.setVapidDetails(VAPID_SUBJECT, VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY)
+  // Throws on a malformed subject or a key of the wrong length -- surface that
+  // as a readable message rather than an opaque FUNCTION_INVOCATION_FAILED.
+  try {
+    webpush.setVapidDetails(VAPID_SUBJECT.trim(), VAPID_PUBLIC_KEY.trim(), VAPID_PRIVATE_KEY.trim())
+  } catch (err) {
+    return res.status(500).json({
+      error: 'Invalid VAPID configuration',
+      detail: err.message,
+      publicKeyLength: VAPID_PUBLIC_KEY.trim().length,
+      privateKeyLength: VAPID_PRIVATE_KEY.trim().length,
+      subjectPrefix: VAPID_SUBJECT.trim().slice(0, 7),
+    })
+  }
 
-  const { event_id: eventId, title } = req.body || {}
+  // Vercel parses JSON bodies itself, but be tolerant of a raw string too.
+  let body = req.body
+  if (typeof body === 'string') {
+    try {
+      body = JSON.parse(body)
+    } catch {
+      body = {}
+    }
+  }
+
+  const { event_id: eventId, title } = body || {}
   if (!eventId || !title) {
     return res.status(400).json({ error: 'event_id and title are required' })
   }
