@@ -11,6 +11,11 @@ self.addEventListener('activate', (event) => {
   event.waitUntil(self.clients.claim())
 })
 
+// Chrome will not treat the site as installable -- and so never fires
+// beforeinstallprompt on Android -- unless a fetch handler exists. We do not
+// cache anything, so this deliberately just defers to the network.
+self.addEventListener('fetch', () => {})
+
 self.addEventListener('push', (event) => {
   if (!event.data) return
 
