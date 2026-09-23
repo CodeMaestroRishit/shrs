@@ -18,8 +18,13 @@ export default async function handler(req, res) {
     return res.status(401).json({ error: 'Unauthorized' })
   }
 
-  const { VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY, VAPID_SUBJECT, SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY } =
-    process.env
+  const { VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY, VAPID_SUBJECT, SUPABASE_SERVICE_ROLE_KEY } = process.env
+
+  // The frontend already defines VITE_SUPABASE_URL and it is the same value, so
+  // accept either rather than requiring the URL to be entered twice. (The VITE_
+  // prefix only affects Vite's build-time inlining; every env var is readable
+  // here at runtime.)
+  const SUPABASE_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL
 
   if (!VAPID_PUBLIC_KEY || !VAPID_PRIVATE_KEY || !VAPID_SUBJECT) {
     return res.status(500).json({ error: 'VAPID keys are not configured' })
