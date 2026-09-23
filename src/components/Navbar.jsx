@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import NotificationBell from './NotificationBell'
 
 export default function Navbar() {
   const { user, profile, isAnyClubAdmin, signInWithGoogle, signOut } = useAuth()
@@ -18,6 +19,7 @@ export default function Navbar() {
         {isAnyClubAdmin && <Link to="/admin">Admin Dashboard</Link>}
         {user ? (
           <div className="navbar-user">
+            <NotificationBell />
             <span>{profile?.name || user.email}</span>
             <button type="button" className="button-ghost" onClick={signOut}>
               Sign out
