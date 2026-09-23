@@ -4805,3 +4805,21 @@ html { scroll-behavior: smooth; }
   line-height: 1.45;
   color: var(--muted);
 }
+
+.install-prompt-cta {
+  flex-shrink: 0;
+  align-self: center;
+  padding: 0.45rem 0.9rem;
+  border: none;
+  border-radius: 8px;
+  background: var(--color-brand);
+  color: var(--color-dark);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.install-prompt-cta:hover {
+  background: var(--brand-strong);
+}
